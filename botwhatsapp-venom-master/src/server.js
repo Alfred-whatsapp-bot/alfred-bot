@@ -12,7 +12,7 @@ create({
     process.exit(1);
   });
 
-
+// inicia o bot
 function start(client) {
     client.onMessage((message) => {
       if (!message.isGroupMsg) {
