@@ -4,7 +4,7 @@ import fetch from "node-fetch";
 export const stageThree = {
   async exec({ from, message, client }) {
     storage[from].address = message;
-    fetch("http://localhost:3000/location?address=" + message)
+    fetch("https://chatbot-location-api.herokuapp.com/location?address=" + message)
       .then((response) => response.json())
       .then((data) => {
         console.log("Distância: " + data);
