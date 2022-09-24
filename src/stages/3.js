@@ -1,40 +1,38 @@
 import { storage } from "../storage.js";
+import fetch from "node-fetch";
 
 export const stageThree = {
   async exec({ from, message, client }) {
-    storage[from].address = message;
-    storage[from].stage = 4;
-
-    if (message === "*") {
-      storage[from].stage = 0;
-      return "Pedido *CANCELADO* com sucesso. \n Volte Sempre!";
-    }
-
-    const address = storage[from].address;
-    const calculaTaxa = await fetch(
-      "https://chatbot-location-api.herokuapp.com/location?address=" + address
-    );
-    const taxa = Number(calculaTaxa.json()).toFixed(1) * 2;
-
-    let desserts = "";
+    fetch(
+      "https://chatbot-location-api.herokuapp.com/location?address=" + message
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+    const order = "🗒️ *RESUMO DO PEDIDO*: \n\n";
     const itens = storage[from].itens;
-    itens.map((item, index) => {
-      if (index == itens.length - 1) {
-        desserts += item.description + ".";
-      } else {
-        desserts += item.description + ", ";
-      }
+    const itensList = itens.map((item) => {
+      return `*${item.description}* - *R$ ${item.price.toFixed(2)}*`;
     });
-    const total = storage[from].itens.length;
-
-    await client.sendText(
-      message.from,
-      `🗒️ *RESUMO DO PEDIDO*: \n\n🧁 Sabores: *${desserts}* \n🚚 Taxa de entrega: ${taxa}. \n📍 Endereço: *${message}* \n💰 Valor dos bolos: *${
-        total * 6
-      },00 reais*. \n⏳ Tempo de entrega: *50 minutos*. \n\n` +
-        "🔊 ```Agora, informe a forma de pagamento e se vai precisar de troco, por gentileza.```"
-    );
-
+    const total = itens.reduce((acc, item) => {
+      return acc + item.price;
+    }, 0);
+    const totalFormatted = total.toFixed(2).toString().replace(".", ",") + "0";
+    const msg =
+      order +
+      itensList.join("\n") +
+      ` \n📍 Endereço: *${message}*` +
+      `\n*TOTAL* - *R$ ${totalFormatted}* + *R$* de taxa de entrega.` +
+      `\n\n📝 Agora, informe a *FORMA DE PAGAMENTO* e se vai precisar de troco. \n\n` +
+      `*Exemplo:* \n\n` +
+      `*Dinheiro* \n` +
+      `*Troco para R$ 20,00* \n\n`;
+    await client.sendText(from, msg);
+    storage[from].stage = 4;
     return "✅ *Prontinho, pedido feito!* \n\nAgora, se você ainda não sabe o valor da taxa de entrega para sua região, vou te passar para um atendente para que ele verique o valor da *taxa de entrega*. \n\n⏳ *Aguarde um instante*.";
   },
 };
