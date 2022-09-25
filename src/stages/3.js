@@ -4,7 +4,9 @@ import fetch from "node-fetch";
 export const stageThree = {
   async exec({ from, message, client }) {
     storage[from].address = message;
-    fetch("https://chatbot-location-api.herokuapp.com/location?address=" + message)
+    fetch(
+      "https://chatbot-location-api.herokuapp.com/location?address=" + message
+    )
       .then((response) => response.json())
       .then((data) => {
         console.log("Distância: " + data);
@@ -17,15 +19,16 @@ export const stageThree = {
           return acc + item.price;
         }, 0);
         const totalFormatted = (total + data).toFixed(2);
+        storage[from].total = totalFormatted;
         const msg =
           order +
           itensList.join("\n") +
           ` \n📍 Endereço: *${message}*` +
-          ` \n🚚 Taxa de entrega: *R$ ${Math.ceil(data.toFixed(2))}*` +
-          ` \n💵 *TOTAL*: *R$ ${Math.ceil(totalFormatted)}*` +
+          ` \n🚚 Taxa de entrega: *R$${Math.ceil(data).toFixed(2)}*` +
+          ` \n💵 *TOTAL*: *R$${Math.ceil(totalFormatted).toFixed(2)}*` +
           ` \n\n📝 Agora, informe a *FORMA DE PAGAMENTO*. \n` +
           ` *Exemplo:* \n` +
-          ` *Dinheiro, troco* para R$ 20,00 \n\n`;
+          ` *Dinheiro, troco* para R$20.00 \n\n`;
         client.sendText(from, msg);
         storage[from].stage = 4;
       })
