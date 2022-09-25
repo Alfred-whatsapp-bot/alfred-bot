@@ -29,6 +29,14 @@ function start(client) {
               console.log('Message sent.');
             }).catch(error => console.error('Error when sending message', error));
           }
+
+          if(currentStage == 5){
+            stages[currentStage].stage.exec({
+              from: message.from,
+              message: message.body,
+              client,
+            });
+          }
       }
     });
 }
