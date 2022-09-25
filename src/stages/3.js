@@ -1,11 +1,10 @@
 import { storage } from "../storage.js";
-import fetch from "node-fetch";
+import { getDistancia } from "../repository/repository.js";
 
 export const stageThree = {
   async exec({ from, message, client }) {
     storage[from].address = message;
-    fetch("http://localhost:3000/location?address=" + message)
-      .then((response) => response.json())
+    getDistancia(message)
       .then((data) => {
         console.log("Distância: " + data);
         const order = "🗒️ *RESUMO DO PEDIDO*: \n\n";
@@ -21,7 +20,9 @@ export const stageThree = {
           order +
           itensList.join("\n") +
           ` \n📍 Endereço: *${message}*` +
-          ` \n🚚 Taxa de entrega: *R$ ${Math.ceil(data.toFixed(2))}*` +
+          ` \n🚚 Taxa de entrega: *R$ ${Math.ceil(
+            (data ? data : 5).toFixed(2)
+          )}*` +
           ` \n💵 *TOTAL*: *R$ ${Math.ceil(totalFormatted)}*` +
           ` \n\n📝 Agora, informe a *FORMA DE PAGAMENTO*. \n` +
           ` *Exemplo:* \n` +

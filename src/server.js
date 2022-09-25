@@ -31,4 +31,4 @@ function start(client) {
           }
       }
     });
-};
+}
