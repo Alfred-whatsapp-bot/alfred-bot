@@ -1,3 +1,4 @@
+
 import { storage } from "../storage.js";
 import { getProdutoById } from "../../repository/repository.mjs";
 
@@ -42,5 +43,3 @@ export const stageTwo = {
         }
       });
     }
-  },
-};
