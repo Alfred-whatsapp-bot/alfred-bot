@@ -8,6 +8,8 @@
     "dev": "node src/server.js"
   },
   "dependencies": {
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.23.1",
     "venom-bot": "^4.2.0"
   }
 }
