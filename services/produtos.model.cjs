@@ -5,7 +5,7 @@ const sequelize = new Sequelize(
 
 const { DataTypes } = require("sequelize");
 const Produtos = sequelize.define(
-  "Produtos",
+  "produtos",
   {
     produto_id: {
       type: DataTypes.INTEGER,
