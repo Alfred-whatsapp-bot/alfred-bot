@@ -16,6 +16,9 @@ create({
     "--single-process",
   ],
   ignoreHTTPSErrors: true,
+  puppeteerOptions: {
+    executablePath: "/usr/bin/chromium-browser",
+  },
 })
   .then((client) => start(client))
   .catch((error) => {
