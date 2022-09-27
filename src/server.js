@@ -6,7 +6,15 @@ create({
   multidevice: true,
   headless: true,
   debug: true,
-  args: ["--fast-start", "--disable-extensions", "--no-sandbox"],
+  args: [
+    "--fast-start",
+    "--disable-extensions",
+    "--no-sandbox",
+    "--disable-gpu",
+    "--disable-dev-shm-usage",
+    "--no-zygote",
+    "--single-process",
+  ],
   ignoreHTTPSErrors: true,
 })
   .then((client) => start(client))
