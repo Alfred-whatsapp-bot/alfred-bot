@@ -3,22 +3,38 @@ import { getAllProdutos } from "../../repository/repository.mjs";
 
 export const stageOne = {
   exec({ from, message, client }) {
-    if (message != "1") {
-      storage[from].stage = 0;
-      storage[from].itens = [];
+    if (message == "FALAR COM ATENDENTE") {
+      // storage[from].stage = 0;
+      // storage[from].itens = [];
 
-      return "🔴 Pedido *CANCELADO* com sucesso. \n\n ```Volte Sempre!```";
+      return "🔴 Aguarde enquanto eu conecto você com um atendente. \n\n ```Volte Sempre!```";
     } else {
       getAllProdutos()
         .then((data) => {
-          const order =
-            "\n-----------------------------------\n#️⃣ - ```FINALIZAR pedido``` \n*️⃣ - ```CANCELAR pedido```";
+          const buttons = [
+            {
+              buttonText: {
+                displayText: "FINALIZAR pedido",
+              },
+            },
+            {
+              buttonText: {
+                displayText: "CANCELAR pedido",
+              },
+            },
+          ];
           let menu = "";
           data.forEach((item) => {
-            menu += `\n*${item.nome}* - R$ ${item.valor}`;
+            let id = item.produto_id;
+            menu += `\n*${id}.${item.nome}* - R$ ${item.valor}`;
           });
           storage[from].stage = 2;
-          client.sendText(from, `📋 *Cardápio* 📋: \n\n${menu}\n\n${order}`);
+          client.sendButtons(
+            from,
+            menu,
+            buttons,
+            " ```Digite o código do produto```:"
+          );
         })
         .catch((err) => {
           console.log(err);

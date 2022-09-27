@@ -1,9 +1,29 @@
-import { storage } from '../storage.js';
+import { storage } from "../storage.js";
 
 export const initialStage = {
-  exec({ from }) {
+  exec({ from, client }) {
     storage[from].stage = 1;
 
-    return '👋 Olá, como vai? \n\nEu sou Alfred. \n*Posso te ajudar?* 🙋‍♂️ \n-----------------------------------\n1️⃣ - ```FAZER PEDIDO``` \n0️⃣ - ```FALAR COM ATENDENTE```';
+    const buttons = [
+      {
+        buttonText: {
+          displayText: "FAZER PEDIDO",
+        },
+      },
+      {
+        buttonText: {
+          displayText: "FALAR COM ATENDENTE",
+        },
+      },
+    ];
+
+    client
+      .sendButtons(from, "Olá, seja bem-vindo(a)!", buttons, "O que deseja?")
+      .then((result) => {
+        console.log("Result: ", result); //return object success
+      })
+      .catch((erro) => {
+        console.error("Error when sending: ", erro); //return object error
+      });
   },
 };
