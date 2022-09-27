@@ -1,4 +1,3 @@
-
 import { storage } from "../storage.js";
 import { getProdutoById } from "../../repository/repository.mjs";
 
@@ -6,16 +5,16 @@ export const stageTwo = {
   exec({ from, message, client }) {
     const order =
       "\n-----------------------------------\n#️⃣ - ```FINALIZAR pedido``` \n*️⃣ - ```CANCELAR pedido```";
-    if (message === "*") {
+    if (message == "*") {
       storage[from].stage = 0;
       storage[from].itens = [];
 
       return "🔴 Pedido *CANCELADO* com sucesso. \n\n ```Volte Sempre!```";
-    } else if (message === "#") {
+    } else if (message == "#") {
       storage[from].stage = 3;
 
       return (
-        "🗺️ Agora, informe o *BAIRRO* e *NOME DA RUA*.\n\n " +
+        "🗺️ Agora, informe o *ENDEREÇO COMPLETO*.\n\n " +
         "\n-----------------------------------\n*️⃣ - ```CANCELAR pedido```"
       );
     } else {
@@ -30,7 +29,7 @@ export const stageTwo = {
             client.sendText(
               from,
               `✅ *${item.nome}* adicionado com sucesso! \n` +
-                `\n Carrinho: \n ${itensList}` +
+                `\nCarrinho: \n${itensList + ""}` +
                 "\n\n ```Digite outra opção```:" +
                 order
             );

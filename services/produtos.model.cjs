@@ -37,3 +37,4 @@ const Produtos = sequelize.define(
 module.exports = {
   Produtos,
 };
+

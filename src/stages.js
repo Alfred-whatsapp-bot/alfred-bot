@@ -44,6 +44,7 @@ export function getStage({ from }) {
     stage: 0,
     itens: [],
     address: '',
+    total: 0,
   };
 
   return storage[from].stage;

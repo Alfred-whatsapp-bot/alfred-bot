@@ -19,19 +19,21 @@ export const stageThree = {
         }, 0);
 
         const taxaEntrega = (distancia * 1.5).toFixed(2);
-        const totalFinal = taxaEntrega + valorTotal;
+        const totalFinal = (Number(taxaEntrega) + Number(valorTotal)).toFixed(
+          2
+        );
+
+        storage[from].total = totalFinal;
 
         const msg =
           order +
           itensList.join("\n") +
           ` \n📍 Endereço: *${message}*` +
-
           ` \n🚚 Taxa de entrega: *R$ ${Math.ceil(taxaEntrega)}*` +
-          ` \n💵 *TOTAL*: *R$ ${totalFinal}*` +
-
-          ` \n\n📝 Agora, informe a *FORMA DE PAGAMENTO*. \n` +
-          ` *Exemplo:* \n` +
-          ` *Dinheiro, troco* para R$20.00 \n\n`;
+          ` \n💵 *TOTAL*: *R$ ${Math.ceil(totalFinal)}*` +
+          ` \n\n📝 Qual a *FORMA DE PAGAMENTO*? \n` +
+          ` Exemplo: \n` +
+          ` Dinheiro, troco para R$20.00 \n\n`;
         client.sendText(from, msg);
         storage[from].stage = 4;
       })
