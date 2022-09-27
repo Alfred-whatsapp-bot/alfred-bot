@@ -1,6 +1,6 @@
 const { Sequelize } = require("sequelize");
 const sequelize = new Sequelize(
-  "mysql://sa7f483b4shxxrq7:j9uazobqudc0zw61@qvti2nukhfiig51b.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/zpzigit5o0jticwb"
+  "mysql://dev:root@34.95.205.131:3306/alfred_bot"
 );
 
 const { DataTypes } = require("sequelize");
@@ -37,4 +37,3 @@ const Produtos = sequelize.define(
 module.exports = {
   Produtos,
 };
-
