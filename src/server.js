@@ -4,7 +4,17 @@ import { stages, getStage } from "./stages.js";
 create({
   session: "store",
   multidevice: true,
-  headless: true,
+  headless: false,
+  args: [
+    "--fast-start",
+    "--disable-extensions",
+    "--no-sandbox",
+    "--disable-gpu",
+    "--disable-dev-shm-usage",
+    "--no-zygote",
+    "--single-process",
+  ],
+  ignoreHTTPSErrors: true,
   puppeteerOptions: {
     executablePath: "/usr/bin/chromium-browser",
   },
