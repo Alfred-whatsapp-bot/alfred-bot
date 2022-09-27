@@ -4,7 +4,6 @@ import { stages, getStage } from "./stages.js";
 create({
   session: "store",
   multidevice: true,
-  headless: true,
   puppeteerOptions: {
     executablePath: "/usr/bin/chromium-browser",
   },
