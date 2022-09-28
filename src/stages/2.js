@@ -19,11 +19,14 @@ export const stageTwo = {
         },
       },
     ];
-    const categoria = getAllCategorias().then((data) => {
+    let cat = [];
+    getAllCategorias().then((data) => {
       data.map((item) => {
+        cat.push(item.categoria);
         return item.categoria;
       });
     });
+    console.log(cat);
 
     if (message == "CANCELAR pedido") {
       storage[from].stage = 0;
@@ -35,7 +38,7 @@ export const stageTwo = {
       storage[from].stage = 3;
       let msg = " 🗺️ Agora, informe o *ENDEREÇO COMPLETO*.\n\n ";
       client.sendText(from, msg);
-    } else if (message.includes(categoria)) {
+    } else if (message.includes(cat)) {
       getProdutosByCategory(message).then((data) => {
         const itensList = data.map((item, index) => {
           return `*${item.produto_id}.*${item.nome}* - R$ ${item.valor}`;
