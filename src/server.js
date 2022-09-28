@@ -6,10 +6,10 @@ create({
   multidevice: true,
   headless: false,
   args: ["--no-sandbox", "--disable-setuid-sandbox"],
-  ignoreHTTPSErrors: true,
-  puppeteerOptions: {
-    executablePath: "/usr/bin/chromium-browser",
-  },
+  // ignoreHTTPSErrors: true,
+  // puppeteerOptions: {
+  //   executablePath: "/usr/bin/chromium-browser",
+  // },
 })
   .then((client) => start(client))
   .catch((error) => {
