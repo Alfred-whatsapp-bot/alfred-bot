@@ -21,6 +21,7 @@ function start(client) {
       hour: "2-digit",
       minute: "2-digit",
     });
+    console.log(dateWithouthSecond);
     if (
       dateWithouthSecond.getHours() >= 8 &&
       dateWithouthSecond.getHours() <= 23
