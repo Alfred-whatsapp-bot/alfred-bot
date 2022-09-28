@@ -34,7 +34,7 @@ export const stageTwo = {
                 return `*${item.nome}* - R$ ${item.valor}`;
               });
 
-              if (storage[from].itens == undefined) {
+              if (storage[from].itens == []) {
                 const msg =
                   "📝 *ESCOLHA O PRODUTO* \n\n" +
                   itensList.join("\n") +
@@ -43,7 +43,6 @@ export const stageTwo = {
 
                 client.sendText(from, msg);
                 storage[from].stage = 2;
-                storage[from].itens = [];
               } else {
                 storage[from].itens.push(item);
                 const itens = storage[from].itens;
