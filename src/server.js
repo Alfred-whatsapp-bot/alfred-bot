@@ -15,9 +15,6 @@ create({
   });
 
 function start(client) {
-  let browser;
-  browser = Whatsappclient.page.browser();
-  browser.close();
   client.onMessage((message) => {
     if (!message.isGroupMsg) {
       const currentStage = getStage({ from: message.from });
