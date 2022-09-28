@@ -4,7 +4,7 @@ import { stages, getStage } from "./stages.js";
 create({
   //session: `session_${Date.now()}`,
   session: "store",
-  multidevice: true,
+  multidevice: false,
   headless: true,
   executablePath: "/usr/bin/chromium-browser",
 })
