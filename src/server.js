@@ -2,7 +2,8 @@ import { create } from "venom-bot";
 import { stages, getStage } from "./stages.js";
 
 create({
-  session: `session_${Date.now()}`,
+  //session: `session_${Date.now()}`,
+  session: "store",
   multidevice: true,
   headless: true,
   executablePath: "/usr/bin/chromium-browser",
