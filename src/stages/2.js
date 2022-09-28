@@ -32,16 +32,17 @@ export const stageTwo = {
       getProdutosByCategory(message)
         .then((data) => {
           const itensList = data.map((item, index) => {
-            return `*${item.nome}* - R$ ${item.valor}`;
+            return `*${item.produto_id}.*${item.nome}* - R$ ${item.valor}`;
           });
           const cardapio =
             `📋 *CARDÁPIO* \n\n` +
             itensList.join("\n") +
-            "Digite o código do produto para adicionar ao carrinho. \n\n";
+            "\n\nDigite o código do produto para adicionar ao carrinho. \n\n" +
+            "Apenas um por vez. \n\n";
           storage[from].stage = 2;
           client.sendText(from, cardapio);
 
-          try {
+          if (message.length < 2) {
             getProdutoById(message)
               .then((data) => {
                 const produto = data;
@@ -54,19 +55,15 @@ export const stageTwo = {
                   return Number(total) + Number(item.valor);
                 }, 0);
                 const msg =
-                  `🗒️ *RESUMO DO PEDIDO*: \n\n` +
+                  `🗒️ *CARRINHO*: \n\n` +
                   itensList.join("\n") +
-                  ` \n\n💵 *TOTAL*: *R$ ${Math.ceil(valorTotal).toFixed(2)}*` +
-                  ` \n\n📝 *FINALIZAR* ou *CANCELAR* o pedido? \n` +
-                  ` Exemplo: \n` +
-                  ` FINALIZAR pedido \n\n`;
-                client.sendText(from, msg);
+                  ` \n\n💵 *TOTAL*: *R$ ${Math.ceil(valorTotal).toFixed(2)}*`;
+
+                client.sendButtons(from, msg, buttons, " ");
               })
               .catch((err) => {
                 console.log(err);
               });
-          } catch (error) {
-            console.log(error);
           }
         })
         .catch((err) => {
