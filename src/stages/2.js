@@ -1,5 +1,5 @@
 import { storage } from "../storage.js";
-import { getProdutoById, getProdutosByCategory } from "../../repository/repository.mjs";
+import { getProdutosByCategory } from "../../repository/repository.mjs";
 
 export const stageTwo = {
   exec({ from, message, client }) {
@@ -30,20 +30,36 @@ export const stageTwo = {
         .then((data) => {
           if (data.length > 0) {
             data.map((item) => {
-              storage[from].itens.push(item);
-              const itens = storage[from].itens;
-              const itensList = itens.map((item, index) => {
-                return `*${item.nome}* - R$ ${item.valor}\n`;
+              const itensList = data.map((item, index) => {
+                return `*${item.nome}* - R$ ${item.valor}`;
               });
-              const totalParcial = itens.reduce((total, item) => {
-                return Number(total) + Number(item.valor);
-              }, 0);
-              let msg2 =
-                `✅ *${item.nome}* adicionado com sucesso! \n` +
-                `\nCarrinho: \n${itensList.join("")}` +
-                `\nTotal: R$ ${Math.ceil(totalParcial).toFixed(2)}\n` +
-                `Digite outra opção:`;
-              client.sendButtons(from, msg2, buttons, " ");
+
+              if (storage[from].itens == undefined) {
+                const msg =
+                  "📝 *ESCOLHA O PRODUTO* \n\n" +
+                  itensList.join("\n") +
+                  ` \n\n📝 *DIGITE O NÚMERO* do produto que deseja adicionar ao carrinho. \n` +
+                  `📝 Apenas um por vez. \n`;
+
+                client.sendText(from, msg);
+                storage[from].stage = 2;
+                storage[from].itens = [];
+              } else {
+                storage[from].itens.push(item);
+                const itens = storage[from].itens;
+                const itensList = itens.map((item, index) => {
+                  return `*${item.nome}* - R$ ${item.valor}\n`;
+                });
+                const totalParcial = itens.reduce((total, item) => {
+                  return Number(total) + Number(item.valor);
+                }, 0);
+                let msg2 =
+                  `✅ *${item.nome}* adicionado com sucesso! \n` +
+                  `\nCarrinho: \n${itensList.join("")}` +
+                  `\nTotal: R$ ${Math.ceil(totalParcial).toFixed(2)}\n` +
+                  `Digite outra opção:`;
+                client.sendButtons(from, msg2, buttons, " ");
+              }
             });
           } else {
             client.sendText(
