@@ -2,11 +2,10 @@ import { create } from "venom-bot";
 import { stages, getStage } from "./stages.js";
 
 create({
-  session: "store",
+  session: `session_${Date.now()}`,
   multidevice: true,
   headless: true,
-  useChrome: true,
-  executablePath: "/usr/bin/google-chrome",
+  executablePath: "/usr/bin/chromium-browser",
 })
   .then((client) => start(client))
   .catch((error) => {
@@ -15,6 +14,9 @@ create({
   });
 
 function start(client) {
+  let browser;
+  browser = Whatsappclient.page.browser();
+  browser.close();
   client.onMessage((message) => {
     if (!message.isGroupMsg) {
       const currentStage = getStage({ from: message.from });
