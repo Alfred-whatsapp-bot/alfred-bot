@@ -4,7 +4,7 @@ import { stages, getStage } from "./stages.js";
 create({
   session: "store",
   multidevice: true,
-  headless: false,
+  headless: true,
   args: [
     "--disable-gpu",
     "--disable-setuid-sandbox",
