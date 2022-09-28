@@ -67,7 +67,7 @@ export const stageOne = {
             from,
             "Escolha uma categoria:",
             array,
-            "Digite o código do produto:"
+            " "
           );
         })
         .then((result) => {
