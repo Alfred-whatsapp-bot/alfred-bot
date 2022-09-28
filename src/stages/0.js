@@ -17,6 +17,8 @@ export const initialStage = {
       },
     ];
 
+    console.log(buttons);
+
     client
       .sendButtons(from, "Olá, seja bem-vindo(a)!", buttons, "O que deseja?")
       .then((result) => {

@@ -5,11 +5,13 @@ create({
   session: "store",
   multidevice: true,
   headless: false,
-  args: ["--no-sandbox", "--disable-setuid-sandbox"],
-  ignoreHTTPSErrors: true,
-  puppeteerOptions: {
-    executablePath: "/usr/bin/chromium-browser",
-  },
+  args: [
+    "--disable-gpu",
+    "--disable-setuid-sandbox",
+    "--no-sandbox",
+    "--no-zygote",
+  ],
+  executablePath: "/usr/bin/chromium-browser",
 })
   .then((client) => start(client))
   .catch((error) => {

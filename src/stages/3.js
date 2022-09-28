@@ -28,9 +28,9 @@ export const stageThree = {
         const msg =
           order +
           itensList.join("\n") +
-          ` \n📍 Endereço: *${message}*` +
-          ` \n🚚 Taxa de entrega: *R$ ${Math.ceil(taxaEntrega)}*` +
-          ` \n💵 *TOTAL*: *R$ ${Math.ceil(totalFinal)}*` +
+          ` \n\n📍 Endereço: *${message}*` +
+          ` \n🚚 Taxa de entrega: *R$ ${Math.ceil(taxaEntrega).toFixed(2)}*` +
+          ` \n\n💵 *TOTAL*: *R$ ${Math.ceil(totalFinal).toFixed(2)}*` +
           ` \n\n📝 Qual a *FORMA DE PAGAMENTO*? \n` +
           ` Exemplo: \n` +
           ` Dinheiro, troco para R$20.00 \n\n`;
