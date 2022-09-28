@@ -73,3 +73,15 @@ export const deleteProduto = async (id) => {
   });
   return produtoDeleted;
 };
+
+export const getAllCategorias = async () => {
+  const categorias = await Produtos.findAll({
+    attributes: ["categoria"],
+    group: ["categoria"],
+
+    where: {
+      ativo: true,
+    },
+  });
+  return categorias.map((categoria) => categoria.toJSON());
+};
