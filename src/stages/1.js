@@ -36,7 +36,7 @@ export const stageOne = {
 
           storage[from].stage = 2;
           client.sendButtons(from, "Escolha uma categoria:", array, " ");
-          client.sendButtons(from, " ", array2, " ");
+          client.sendButtons(from, "Escolha uma categoria:", array2, " ");
         })
         .then((result) => {
           console.log("Result: ", result); //return object success
