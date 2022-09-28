@@ -5,15 +5,7 @@ create({
   session: "store",
   multidevice: true,
   headless: false,
-  args: [
-    "--fast-start",
-    "--disable-extensions",
-    "--no-sandbox",
-    "--disable-gpu",
-    "--disable-dev-shm-usage",
-    "--no-zygote",
-    "--single-process",
-  ],
+  args: ["--no-sandbox", "--disable-setuid-sandbox"],
   ignoreHTTPSErrors: true,
   puppeteerOptions: {
     executablePath: "/usr/bin/chromium-browser",
