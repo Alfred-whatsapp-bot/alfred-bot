@@ -4,8 +4,13 @@ import { stages, getStage } from "./stages.js";
 create({
   session: "store",
   multidevice: true,
-  headless: false,
-  args: ["--no-sandbox", "--disable-setuid-sandbox"],
+  headless: true,
+  args: [
+    "--disable-gpu",
+    "--disable-setuid-sandbox",
+    "--no-sandbox",
+    "--no-zygote",
+  ],
   executablePath: "/usr/bin/chromium-browser",
 })
   .then((client) => start(client))
