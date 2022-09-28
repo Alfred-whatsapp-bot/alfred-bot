@@ -34,42 +34,16 @@ export const stageTwo = {
                 return `*${item.nome}* - R$ ${item.valor}`;
               });
 
-              if (storage[from].itens == []) {
-                const msg =
-                  "📝 *ESCOLHA O PRODUTO* \n\n" +
-                  itensList.join("\n") +
-                  ` \n\n📝 *DIGITE O NÚMERO* do produto que deseja adicionar ao carrinho. \n` +
-                  `📝 Apenas um por vez. \n`;
-
-                client.sendText(from, msg);
-                storage[from].stage = 2;
-              } else {
-                storage[from].itens.push(item);
-                const itens = storage[from].itens;
-                const itensList = itens.map((item, index) => {
-                  return `*${item.nome}* - R$ ${item.valor}\n`;
-                });
-                const totalParcial = itens.reduce((total, item) => {
-                  return Number(total) + Number(item.valor);
-                }, 0);
-                let msg2 =
-                  `✅ *${item.nome}* adicionado com sucesso! \n` +
-                  `\nCarrinho: \n${itensList.join("")}` +
-                  `\nTotal: R$ ${Math.ceil(totalParcial).toFixed(2)}\n` +
-                  `Digite outra opção:`;
-                client.sendButtons(from, msg2, buttons, " ");
-              }
+              const cardapio = `📋 *CARDÁPIO* \n\n` + itensList.join("\n");
+              client.sendText(from, cardapio);
             });
           } else {
-            client.sendText(
-              from,
-              "❌ *Código inválido* \n\n" +
-                "```Digite novamente```: \n\n" +
-                order
-            );
+            client.sendText(from, "Categoria não encontrada!");
           }
         })
-        .catch((error) => console.error("Error when sending message", error));
+        .catch((err) => {
+          console.log(err);
+        }, 0);
     }
   },
 };
