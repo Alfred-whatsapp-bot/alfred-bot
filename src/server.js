@@ -5,7 +5,8 @@ create({
   session: "store",
   multidevice: true,
   headless: true,
-  executablePath: "/usr/bin/chromium-browser",
+  useChrome: true,
+  executablePath: "/usr/bin/google-chrome",
 })
   .then((client) => start(client))
   .catch((error) => {
