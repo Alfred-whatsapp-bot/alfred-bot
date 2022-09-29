@@ -5,7 +5,7 @@ create({
   //session: `session_${Date.now()}`,
   session: "store",
   multidevice: false,
-  headless: true,
+  headless: false,
   executablePath: "/usr/bin/chromium-browser",
 })
   .then((client) => start(client))
@@ -16,16 +16,16 @@ create({
 
 function start(client) {
   client.onMessage((message) => {
-    // let dateWithouthSecond = new Date();
-    // dateWithouthSecond.toLocaleTimeString(navigator.language, {
-    //   hour: "2-digit",
-    //   minute: "2-digit",
-    // });
-    // console.log(dateWithouthSecond);
-    // if (
-    //   dateWithouthSecond.getHours() >= 8 &&
-    //   dateWithouthSecond.getHours() <= 23
-    // ) {
+    //   let dateWithouthSecond = new Date();
+    //   dateWithouthSecond.toLocaleTimeString(navigator.language, {
+    //     hour: "2-digit",
+    //     minute: "2-digit",
+    //   });
+    //   console.log(dateWithouthSecond);
+    //   if (
+    //     dateWithouthSecond.getHours() >= 8 &&
+    //     dateWithouthSecond.getHours() <= 23
+    //   ) {
     if (!message.isGroupMsg) {
       const currentStage = getStage({ from: message.from });
 
@@ -42,8 +42,8 @@ function start(client) {
             console.log("Message sent.");
           })
           .catch((error) => console.error("Error when sending message", error));
-        // }
       }
+      // }
     } else {
       client.sendText(
         message.from,

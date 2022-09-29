@@ -18,16 +18,18 @@ export const stageOne = {
           let botoes = [];
           let array = [];
           let array2 = [];
+          let count = 0;
           for (const element of categorias) {
             botoes = {
               buttonText: {
                 displayText: element,
               },
             };
-            if (botoes.length < 3) {
-              array.push(botoes);
-            } else {
+            count++;
+            if (count < 3) {
               array2.push(botoes);
+            } else {
+              array.push(botoes);
             }
           }
 
@@ -35,8 +37,8 @@ export const stageOne = {
           console.log(array2);
 
           storage[from].stage = 2;
+          client.sendButtons(from, "Temos também:", array2, " ");
           client.sendButtons(from, "Escolha uma categoria:", array, " ");
-          client.sendButtons(from, "Escolha uma categoria:", array2, " ");
         })
         .then((result) => {
           console.log("Result: ", result); //return object success

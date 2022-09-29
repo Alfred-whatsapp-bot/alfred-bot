@@ -6,7 +6,6 @@ export const stageThree = {
     storage[from].address = message;
     getDistancia(message)
       .then((data) => {
-        console.log("Distância: " + data.distancia + " Status: ", data.status);
         const distancia = data.status == "200" ? data.distancia : 7;
         const order = "🗒️ *RESUMO DO PEDIDO*: \n\n";
         const itens = storage[from].itens;
