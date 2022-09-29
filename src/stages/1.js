@@ -1,8 +1,5 @@
 import { storage } from "../storage.js";
-import {
-  getAllCategorias,
-  getAllProdutos,
-} from "../../repository/repository.mjs";
+import { getAllCategorias } from "../../repository/repository.mjs";
 
 export const stageOne = {
   exec({ from, message, client }) {
@@ -12,37 +9,6 @@ export const stageOne = {
 
       return "🔴 Aguarde enquanto eu conecto você com um atendente. \n\n ```Volte Sempre!```";
     } else {
-      // getAllProdutos()
-      //   .then((data) => {
-      //     const buttons = [
-      //       {
-      //         buttonText: {
-      //           displayText: "FINALIZAR pedido",
-      //         },
-      //       },
-      //       {
-      //         buttonText: {
-      //           displayText: "CANCELAR pedido",
-      //         },
-      //       },
-      //     ];
-      //     let menu = "";
-      //     data.forEach((item) => {
-      //       let id = item.produto_id;
-      //       menu += `\n*${id}.${item.nome}* - R$ ${item.valor}`;
-      //     });
-      //     storage[from].stage = 2;
-      //     client.sendButtons(
-      //       from,
-      //       menu,
-      //       buttons,
-      //       "Digite o código do produto:"
-      //     );
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
-
       getAllCategorias()
         .then((data) => {
           const categorias = data.map((item) => {
@@ -51,24 +17,28 @@ export const stageOne = {
 
           let botoes = [];
           let array = [];
+          let array2 = [];
+          let count = 0;
           for (const element of categorias) {
             botoes = {
               buttonText: {
                 displayText: element,
               },
             };
-            array.push(botoes);
+            count++;
+            if (count < 3) {
+              array2.push(botoes);
+            } else {
+              array.push(botoes);
+            }
           }
 
           console.log(array);
+          console.log(array2);
 
           storage[from].stage = 2;
-          client.sendButtons(
-            from,
-            "Escolha uma categoria:",
-            array,
-            " "
-          );
+          client.sendButtons(from, "Temos também:", array2, " ");
+          client.sendButtons(from, "Escolha uma categoria:", array, " ");
         })
         .then((result) => {
           console.log("Result: ", result); //return object success

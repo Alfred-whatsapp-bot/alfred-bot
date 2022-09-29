@@ -2,14 +2,20 @@ import fetch from "node-fetch";
 import { Produtos } from "../services/produtos.model.cjs";
 
 export const getDistancia = async (address) => {
-  const response = await fetch(
-    "https://chatbot-location-api.herokuapp.com/location?address=" + address
-  );
   const data = {
-    distancia: await response.json(),
-    status: response.status,
+    distancia: 5,
+    status: 200,
   };
   return data;
+  // await fetch(
+  //   "https://chatbot-location-api.herokuapp.com/location?address=" + address
+  // ).then((res) => {
+  //   const data = {
+  //     distancia: res.json(),
+  //     status: res.status,
+  //   };
+  //   return data;
+  // });
 };
 
 export const getAllProdutos = async () => {
