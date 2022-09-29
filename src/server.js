@@ -18,21 +18,35 @@ create({
   });
 
 function start(client) {
-  let dateWithouthSecond = new Date();
-  console.log(dateWithouthSecond);
+  let date = new Date();
+  let hour = date.getHours();
+  let minutes = date.getMinutes();
+  let hourMinutes = hour + ":" + minutes;
+  console.log(hourMinutes);
   client.onMessage((message) => {
-    if (!message.isGroupMsg) {
-      const currentStage = getStage({ from: message.from });
+    if (hour >= 8 && hour <= 22) {
+      if (!message.isGroupMsg) {
+        const currentStage = getStage({ from: message.from });
 
-      const messageResponse = stages[currentStage].stage.exec({
-        from: message.from,
-        message: message.body,
-        client,
-      });
+        const messageResponse = stages[currentStage].stage.exec({
+          from: message.from,
+          message: message.body,
+          client,
+        });
 
-      if (messageResponse) {
+        if (messageResponse) {
+          client
+            .sendText(message.from, messageResponse)
+            .then(() => {
+              console.log("Message sent.");
+            })
+            .catch((error) =>
+              console.error("Error when sending message", error)
+            );
+        }
+      } else {
         client
-          .sendText(message.from, messageResponse)
+          .sendText(message.from, "🔴 Desculpe, não atendemos grupos!")
           .then(() => {
             console.log("Message sent.");
           })
