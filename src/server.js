@@ -5,7 +5,7 @@ create({
   //session: `session_${Date.now()}`,
   session: "store",
   multidevice: false,
-  headless: false,
+  headless: true,
   executablePath: "/usr/bin/chromium-browser",
 })
   .then((client) => start(client))
