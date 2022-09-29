@@ -6,6 +6,11 @@ export const stageOne = {
     if (message == "FALAR COM ATENDENTE") {
       storage[from].stage = 5;
       storage[from].itens = [];
+      const phone = from.split("@");
+
+      const msg = `🔔 *NOVO PEDIDO* 🔔: \n\n📞 Cliente: +${phone[0]} \n📲 Deseja falar com um atendente!`;
+
+      //client.sendText("HgdbSMbwzlv0fna8g40452@g.us", msg); // Teste envio de mensagem para grupo
 
       return "🔴 Aguarde enquanto eu conecto você com um atendente. \n\n ```Volte Sempre!```";
     } else {
