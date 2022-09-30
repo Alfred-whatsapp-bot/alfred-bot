@@ -1,5 +1,8 @@
 import { create } from "venom-bot";
 import { stages, getStage } from "./stages.js";
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+require("dotenv").config();
 
 create({
   //session: `session_${Date.now()}`,
