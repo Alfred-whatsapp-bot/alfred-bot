@@ -46,6 +46,8 @@ export function getStage({ from }) {
     address: "",
     total: 0,
     category: [],
+    order: "",
+    problem: "",
   };
 
   return storage[from].stage;
