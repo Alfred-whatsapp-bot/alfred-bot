@@ -4,8 +4,8 @@ import { getDistancia } from "../../repository/repository.mjs";
 export const stageThree = {
   async exec({ from, message, client }) {
     storage[from].address = message;
-    getDistancia(message)
-      .then((data) => {
+    await getDistancia(message)
+      .then(async (data) => {
         const distancia = data.status == "200" ? data.distancia : 7;
         const order = "🗒️ *RESUMO DO PEDIDO*: \n\n";
         const itens = storage[from].itens;
@@ -33,7 +33,7 @@ export const stageThree = {
           ` \n\n📝 Qual a *FORMA DE PAGAMENTO*? \n` +
           ` Exemplo: \n` +
           ` Dinheiro, troco para R$20.00 \n\n`;
-        client.sendText(from, msg);
+        await client.sendText(from, msg);
         storage[from].stage = 4;
       })
       .catch((err) => {
