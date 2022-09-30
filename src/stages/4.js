@@ -1,7 +1,7 @@
 import { storage } from "../storage.js";
 
 export const stageFour = {
-  exec({ from, message, client }) {
+  async exec({ from, message, client }) {
     const address = storage[from].address;
     const phone = from.split("@");
     const itens = storage[from].itens;
@@ -21,6 +21,6 @@ export const stageFour = {
     )}*. \n⏳ Tempo de entrega: *50 minutos*. \n🛑 Detalhes: *${message}* \n\n📲 Obrigado por comprar conosco!`;
 
     //client.sendText("HgdbSMbwzlv0fna8g40452@g.us", msg); // Teste envio de mensagem para grupo
-    client.sendText(from, msg);
+    await client.sendText(from, msg);
   },
 };
