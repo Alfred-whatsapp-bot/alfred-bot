@@ -1,6 +1,5 @@
 import { storage } from "../storage.js";
 import {
-  getProdutoById,
   getProdutosByCategory,
   getAllCategorias,
   getProdutoByName,
@@ -11,12 +10,12 @@ export const stageTwo = {
     const buttons = [
       {
         buttonText: {
-          displayText: "FINALIZAR pedido",
+          displayText: "OUTRO item",
         },
       },
       {
         buttonText: {
-          displayText: "CANCELAR pedido",
+          displayText: "FINALIZAR pedido",
         },
       },
       {
@@ -53,7 +52,7 @@ export const stageTwo = {
           let itemList = [];
           let array = [];
           for (const itens of itensList) {
-            (itemList = {
+            itemList = {
               title: ` `,
               rows: [
                 {
@@ -61,14 +60,15 @@ export const stageTwo = {
                   description: `R$ ${itens.valor}`,
                 },
               ],
-            }),
-              array.push(itemList);
+            };
+            array.push(itemList);
           }
-          console.log(array);
+          storage[from].categoria = "";
+          storage[from].categoria = message;
           await client
             .sendListMenu(
               from,
-              "Cardápio",
+              `${itensList[0].categoria}`,
               "subTitle",
               "Escolha um prato por vez.",
               "CARDÁPIO",
@@ -87,9 +87,44 @@ export const stageTwo = {
           from,
           "🗺️ Agora, informe o *ENDEREÇO DE ENTREGA*.\n\n"
         );
-      } else if (message == "CANCELAR pedido") {
-        storage[from].stage = 0;
-        await client.sendText(from, "```Pedido Cancelado!```");
+      } else if (message == "OUTRO item") {
+        const categoria = storage[from].categoria;
+        await getProdutosByCategory(categoria).then(async (data) => {
+          const itensList = data.map((item, index) => {
+            return item;
+          });
+          let itemList = [];
+          let array = [];
+          for (const itens of itensList) {
+            itemList = {
+              title: ` `,
+              rows: [
+                {
+                  title: `${itens.nome}`,
+                  description: `R$ ${itens.valor}`,
+                },
+              ],
+            };
+            array.push(itemList);
+          }
+          storage[from].categoria = "";
+          storage[from].categoria = message;
+          await client
+            .sendListMenu(
+              from,
+              `${itensList[0].categoria}`,
+              "subTitle",
+              "Escolha um item por vez.",
+              "CARDÁPIO",
+              array
+            )
+            .then((result) => {
+              console.log("Result: ", result); //return object success
+            })
+            .catch((erro) => {
+              console.error("Error when sending: ", erro); //return object error
+            });
+        });
       } else if (message == "OUTRA categoria") {
         await getAllCategorias().then(async (data) => {
           const categorias = data.map((item) => {
@@ -99,7 +134,7 @@ export const stageTwo = {
           let categoriaList = [];
           let array = [];
           for (const categoria of categorias) {
-            (categoriaList = {
+            categoriaList = {
               title: ` `,
               rows: [
                 {
@@ -107,8 +142,8 @@ export const stageTwo = {
                   description: "",
                 },
               ],
-            }),
-              array.push(categoriaList);
+            };
+            array.push(categoriaList);
           }
           console.log(array);
           storage[from].stage = 2;
@@ -142,7 +177,7 @@ export const stageTwo = {
                 return Number(total) + Number(item.valor);
               }, 0);
               let msg2 =
-                `✅ *${item.nome}* adicionado com sucesso! \n` +
+                `✅ *${item.nome}* adicionado ao *CARRINHO*! \n` +
                 `\nCarrinho: \n${itensList.join("")}` +
                 `\nSubtotal: R$ ${Math.ceil(totalParcial).toFixed(2)}\n`;
               await client.sendButtons(from, msg2, buttons, " ");
