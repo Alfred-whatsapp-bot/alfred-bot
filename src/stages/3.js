@@ -8,6 +8,7 @@ export const stageThree = {
       .then(async (data) => {
         console.log(data);
         const distancia = 10;
+        //const distancia = data.distancia ? data.distancia : 10;
         const order = "🗒️ *RESUMO DO PEDIDO*: \n\n";
         const itens = storage[from].itens;
         const itensList = itens.map((item, index) => {
