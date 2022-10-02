@@ -1,7 +1,4 @@
-import {
-  getAllCategorias,
-  getAllProdutos,
-} from "../../repository/repository.mjs";
+import { getAllProdutos } from "../../repository/repository.mjs";
 import { storage } from "../storage.js";
 
 export const initialStage = {
