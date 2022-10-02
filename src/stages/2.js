@@ -152,7 +152,7 @@ export const stageTwo = {
               from,
               "Categorias",
               "subTitle",
-              "Escolha uma categoria:",
+              "Escolha um item por vez.",
               "MENU",
               array
             )
