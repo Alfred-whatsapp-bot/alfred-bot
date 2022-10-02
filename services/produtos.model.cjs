@@ -1,7 +1,7 @@
 const { Sequelize } = require("sequelize");
 require("dotenv").config();
 const sequelize = new Sequelize(
-  "mysql://dev:root@34.95.205.131:3306/alfred_bot"
+  `mysql://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@${DATABASE_HOST}/${DATABASE_NAME}`
 );
 
 const { DataTypes } = require("sequelize");
