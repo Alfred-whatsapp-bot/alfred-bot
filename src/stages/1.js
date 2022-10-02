@@ -11,13 +11,7 @@ export const stageOne = {
       const msg =
         "🔴 Aguarde enquanto eu conecto você com um atendente. \n\n ```Volte Sempre!```";
 
-<<<<<<< HEAD
-      client.sendText("HgdbSMbwzlv0fna8g40452@g.us", msg); // Teste envio de mensagem para grupo
-
-      return "🔴 Aguarde enquanto eu conecto você com um atendente. \n\n ```Volte Sempre!```";
-=======
       client.sendText(from, msg); // Teste envio de mensagem para grupo
->>>>>>> 2eb884828e23fbbe23464d6ae482858fb0751e6b
     } else {
       //   await getAllCategorias()
       //     .then(async (data) => {
