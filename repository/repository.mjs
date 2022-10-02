@@ -10,7 +10,11 @@ export const getDistancia = async (address) => {
   await fetch(
     "https://alfred-database.rj.r.appspot.com/location?address=" + address
   ).then((res) => {
-    return res.json();
+    if (res.status === 200 || res.status === 304) {
+      return res.json();
+    } else {
+      return { distancia: 0, status: 400 };
+    }
   });
 };
 
