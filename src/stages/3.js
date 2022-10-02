@@ -6,7 +6,8 @@ export const stageThree = {
     storage[from].address = message;
     await getDistancia(message)
       .then(async (data) => {
-        const distancia = data.status == "200" ? data.distancia : 7;
+        console.log(data);
+        const distancia = 10;
         const order = "🗒️ *RESUMO DO PEDIDO*: \n\n";
         const itens = storage[from].itens;
         const itensList = itens.map((item, index) => {
