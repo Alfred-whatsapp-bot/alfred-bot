@@ -46,6 +46,7 @@ export function getStage({ from }) {
     address: "",
     total: 0,
     category: [],
+    categoria: "",
     order: "",
     problem: "",
   };
