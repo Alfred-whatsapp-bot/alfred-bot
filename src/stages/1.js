@@ -8,11 +8,10 @@ export const stageOne = {
       storage[from].itens = [];
       const phone = from.split("@");
 
-      const msg = `🔔 *NOVO PEDIDO* 🔔: \n\n📞 Cliente: +${phone[0]} \n📲 Deseja falar com um atendente!`;
+      const msg =
+        "🔴 Aguarde enquanto eu conecto você com um atendente. \n\n ```Volte Sempre!```";
 
-      //client.sendText("HgdbSMbwzlv0fna8g40452@g.us", msg); // Teste envio de mensagem para grupo
-
-      return "🔴 Aguarde enquanto eu conecto você com um atendente. \n\n ```Volte Sempre!```";
+      client.sendText(from, msg); // Teste envio de mensagem para grupo
     } else {
       //   await getAllCategorias()
       //     .then(async (data) => {
