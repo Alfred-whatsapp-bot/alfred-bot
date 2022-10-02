@@ -2,20 +2,16 @@ import fetch from "node-fetch";
 import { Produtos } from "../services/produtos.model.cjs";
 
 export const getDistancia = async (address) => {
- // const data = {
- //   distancia: 5,
- //   status: 200,
- // };
- // return data;
-   await fetch(
-     "https://alfred-database.rj.r.appspot.com/location?address=" + address
-   ).then((res) => {
-     const data = {
-       distancia: res.json(),
-       status: res.status,
-     };
-     return data;
-   });
+  // const data = {
+  //   distancia: 5,
+  //   status: 200,
+  // };
+  // return data;
+  await fetch(
+    "https://alfred-database.rj.r.appspot.com/location?address=" + address
+  ).then((res) => {
+    return res.json();
+  });
 };
 
 export const getAllProdutos = async () => {

@@ -1,4 +1,4 @@
-import { storage } from "../storage";
+import { storage } from "../storage.js";
 
 /**
  * The client is connection ended here. In 60 seconds, it'll closed.
