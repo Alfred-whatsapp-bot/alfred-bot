@@ -10,17 +10,17 @@ export const stageTwo = {
     const buttons = [
       {
         buttonText: {
-          displayText: "OUTRO item",
+          displayText: "OUTRO ITEM",
         },
       },
       {
         buttonText: {
-          displayText: "FINALIZAR pedido",
+          displayText: "OUTRA CATEGORIA",
         },
       },
       {
         buttonText: {
-          displayText: "OUTRA categoria",
+          displayText: "FINALIZAR PEDIDO",
         },
       },
     ];
@@ -70,7 +70,7 @@ export const stageTwo = {
               from,
               `${itensList[0].categoria}`,
               "subTitle",
-              "Escolha um prato por vez.",
+              "Escolha um item por vez.",
               "CARDÁPIO",
               array
             )

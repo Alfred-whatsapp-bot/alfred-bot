@@ -76,7 +76,7 @@ export const stageOne = {
         await client
           .sendListMenu(
             from,
-            "Escolha uma categoria:",
+            "Escolha uma categoria",
             "Subtitulo",
             "Bom Apetite!",
             "MENU",
