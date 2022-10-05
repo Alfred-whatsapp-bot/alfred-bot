@@ -27,49 +27,49 @@ export const initialStage = {
         console.error("Error when sending: ", erro); //return object error
       });
 
-    // Send List menu
-    //This function does not work for Bussines contacts
-    await getAllProdutos().then(async (data) => {
-      const list = data.map((item) => {
-        return {
-          id: item.produto_id,
-          nome: item.nome,
-          categoria: item.categoria,
-          valor: item.valor,
-        };
-      });
+    // // Send List menu
+    // //This function does not work for Bussines contacts
+    // await getAllProdutos().then(async (data) => {
+    //   const list = data.map((item) => {
+    //     return {
+    //       id: item.produto_id,
+    //       nome: item.nome,
+    //       categoria: item.categoria,
+    //       valor: item.valor,
+    //     };
+    //   });
 
-      let listMenu = [];
-      for (const element of list) {
-        listMenu = [
-          {
-            title: element.categoria,
-            rows: [
-              {
-                title: element.nome,
-                description: element.valor,
-              },
-            ],
-          },
-        ];
-      }
-      console.log(listMenu);
+    //   let listMenu = [];
+    //   for (const element of list) {
+    //     listMenu = [
+    //       {
+    //         title: element.categoria,
+    //         rows: [
+    //           {
+    //             title: element.nome,
+    //             description: element.valor,
+    //           },
+    //         ],
+    //       },
+    //     ];
+    //   }
+    //   console.log(listMenu);
 
-      await client
-        .sendListMenu(
-          from,
-          "Title",
-          "subTitle",
-          "Description",
-          "menu",
-          listMenu
-        )
-        .then((result) => {
-          console.log("Result: ", result); //return object success
-        })
-        .catch((erro) => {
-          console.error("Error when sending: ", erro); //return object error
-        });
-    });
+    //   await client
+    //     .sendListMenu(
+    //       from,
+    //       "Title",
+    //       "subTitle",
+    //       "Description",
+    //       "menu",
+    //       listMenu
+    //     )
+    //     .then((result) => {
+    //       console.log("Result: ", result); //return object success
+    //     })
+    //     .catch((erro) => {
+    //       console.error("Error when sending: ", erro); //return object error
+    //     });
+    // });
   },
 };

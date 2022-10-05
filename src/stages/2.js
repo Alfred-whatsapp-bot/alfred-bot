@@ -70,8 +70,8 @@ export const stageTwo = {
               from,
               `${itensList[0].categoria}`,
               "subTitle",
-              "Escolha um item por vez.",
-              "CARDÁPIO",
+              "Escolha um item por vez e monte seu carrinho.",
+              `${(itensList[0].categoria).toUpperCase()}`,
               array
             )
             .then((result) => {
@@ -81,13 +81,13 @@ export const stageTwo = {
               console.error("Error when sending: ", erro); //return object error
             });
         });
-      } else if (message == "FINALIZAR pedido") {
+      } else if (message == "FINALIZAR PEDIDO") {
         storage[from].stage = 3;
         await client.sendText(
           from,
           "🗺️ Agora, informe o *ENDEREÇO DE ENTREGA*.\n\n"
         );
-      } else if (message == "OUTRO item") {
+      } else if (message == "OUTRO ITEM") {
         const categoria = storage[from].categoria;
         await getProdutosByCategory(categoria).then(async (data) => {
           const itensList = data.map((item, index) => {
@@ -114,8 +114,8 @@ export const stageTwo = {
               from,
               `${itensList[0].categoria}`,
               "subTitle",
-              "Escolha um item por vez.",
-              "CARDÁPIO",
+              "Escolha um item por vez e monte seu carrinho.",
+              `${(itensList[0].categoria).toUpperCase()}`,
               array
             )
             .then((result) => {
@@ -125,7 +125,7 @@ export const stageTwo = {
               console.error("Error when sending: ", erro); //return object error
             });
         });
-      } else if (message == "OUTRA categoria") {
+      } else if (message == "OUTRA CATEGORIA") {
         await getAllCategorias().then(async (data) => {
           const categorias = data.map((item) => {
             return item.categoria;
@@ -152,7 +152,7 @@ export const stageTwo = {
               from,
               "Categorias",
               "subTitle",
-              "Escolha um item por vez.",
+              "Escolha um item por vez e monte seu carrinho.",
               "MENU",
               array
             )
