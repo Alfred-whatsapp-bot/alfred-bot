@@ -71,7 +71,7 @@ export const stageTwo = {
               `${itensList[0].categoria}`,
               "subTitle",
               "Escolha um item por vez e monte seu carrinho.",
-              `${(itensList[0].categoria).toUpperCase()}`,
+              `CARDÁPIO`,
               array
             )
             .then((result) => {
@@ -115,7 +115,7 @@ export const stageTwo = {
               `${itensList[0].categoria}`,
               "subTitle",
               "Escolha um item por vez e monte seu carrinho.",
-              `${(itensList[0].categoria).toUpperCase()}`,
+              `CARDÁPIO`,
               array
             )
             .then((result) => {
