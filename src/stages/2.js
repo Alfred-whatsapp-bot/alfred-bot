@@ -104,7 +104,7 @@ export const stageTwo = {
       } else if (message == "REMOVER ITEM") {
         const itens = storage[from].itens;
         const itensList = itens.map((item, index) => {
-          return `${index}-*${item.nome}* - R$ ${item.valor}\n`;
+          return `${index}.*${item.nome}* - R$ ${item.valor}\n`;
         });
         let msgRemover =
           `✏️ *REMOVER ITEM* \n` +
@@ -137,7 +137,7 @@ export const stageTwo = {
               ],
             };
             array.push(itemList);
-          }          
+          }
           //storage[from].categoria = message;
           await client
             .sendListMenu(

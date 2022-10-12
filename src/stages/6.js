@@ -25,7 +25,7 @@ export const removalStage = {
       return `*${item.nome}* - *R$ ${item.valor}*\n`;
     });
 
-    const valorTotal = newItemList.reduce((total, item) => {
+    const totalParcial = itens.reduce((total, item) => {
       return Number(total) + Number(item.valor);
     }, 0);
 
@@ -33,7 +33,7 @@ export const removalStage = {
       `Item removido com sucesso!` +
       `\n\n*CARRINHO:*` +
       `\n${newItemList.join("")}` +
-      `\n\n*TOTAL:* *R$ ${valorTotal}*`;
+      `\n\n*SUBTOTAL:* *R$ ${totalParcial}*`;
     storage[from].stage = 2;
     await client.sendButtons(from, msg, buttons, "O que deseja fazer agora?");
   },
