@@ -96,7 +96,7 @@ export const stageTwo = {
           return Number(total) + Number(item.valor);
         }, 0);
         let msg2 =
-          `✏️ *RESUMO DO PEDIDO* \n` +
+          `✏️ *RESUMO DO CARRINHO* \n` +
           `\n${itensList.join("")}` +
           `\nSubtotal: R$ ${totalParcial.toFixed(2)}\n`;
         storage[from].stage = 2;
@@ -104,12 +104,12 @@ export const stageTwo = {
       } else if (message == "REMOVER ITEM") {
         const itens = storage[from].itens;
         const itensList = itens.map((item, index) => {
-          return `${index}.*${item.nome}* - R$ ${item.valor}\n`;
+          return `${index+1}.*${item.nome}* - R$ ${item.valor}\n`;
         });
         let msgRemover =
           `✏️ *REMOVER ITEM* \n` +
           `\n${itensList.join("")}` +
-          `\n\nDigite o número do item que deseja remover do carrinho.\n`;
+          `\nDigite o número do item que deseja remover do carrinho.\n`;
         storage[from].stage = 6;
         await client.sendText(from, msgRemover);
       } else if (message == "FINALIZAR PEDIDO") {

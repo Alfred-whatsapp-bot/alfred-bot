@@ -19,7 +19,7 @@ export const removalStage = {
         },
       },
     ];
-    await storage[from].itens.splice(message, 1);
+    await storage[from].itens.splice(Number(message) - 1, 1);
 
     const newItemList = storage[from].itens.map((item, index) => {
       return `*${item.nome}* - *R$ ${item.valor}*\n`;
