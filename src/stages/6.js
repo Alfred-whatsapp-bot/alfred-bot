@@ -25,7 +25,7 @@ export const removalStage = {
       return `*${item.nome}* - *R$ ${item.valor}*\n`;
     });
 
-    const totalParcial = itens.reduce((total, item) => {
+    const totalParcial = storage[from].itens.reduce((total, item) => {
       return Number(total) + Number(item.valor);
     }, 0);
 
