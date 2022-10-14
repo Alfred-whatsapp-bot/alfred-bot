@@ -20,6 +20,24 @@ export const stageTwo = {
       },
       {
         buttonText: {
+          displayText: "FINALIZAR CARRINHO",
+        },
+      },
+    ];
+
+    const buttons2 = [
+      {
+        buttonText: {
+          displayText: "REMOVER ITEM",
+        },
+      },
+      {
+        buttonText: {
+          displayText: "ADICIONAR MAIS",
+        },
+      },
+      {
+        buttonText: {
           displayText: "FINALIZAR PEDIDO",
         },
       },
@@ -33,18 +51,6 @@ export const stageTwo = {
       let cat = categorias.map((item) => item.categoria);
       console.log(cat);
       if (cat.includes(message)) {
-        // await getProdutosByCategory(message).then(async (data) => {
-        //   const itensList = data.map((item, index) => {
-        //     return `*${item.produto_id}*.${item.nome} - *R$ ${item.valor}*`;
-        //   });
-        // const cardapio =
-        //   `📋 *CARDÁPIO* \n\n` +
-        //   itensList.join("\n") +
-        //   "\n\nDigite o *código do produto* para adicionar ao *carrinho*.\n" +
-        //   "Apenas *um* por vez. \n\n";
-        // storage[from].stage = 2;
-        // await client.sendButtons(from, cardapio, buttons, " ");
-        //});
         await getProdutosByCategory(message).then(async (data) => {
           const itensList = data.map((item, index) => {
             return item;
@@ -63,7 +69,7 @@ export const stageTwo = {
             };
             array.push(itemList);
           }
-          storage[from].categoria = "";
+
           storage[from].categoria = message;
           await client
             .sendListMenu(
@@ -71,7 +77,7 @@ export const stageTwo = {
               `${itensList[0].categoria}`,
               "subTitle",
               "Escolha um item por vez e monte seu carrinho.",
-              `${(itensList[0].categoria).toUpperCase()}`,
+              `MENU`,
               array
             )
             .then((result) => {
@@ -81,6 +87,31 @@ export const stageTwo = {
               console.error("Error when sending: ", erro); //return object error
             });
         });
+      } else if (message == "FINALIZAR CARRINHO") {
+        const itens = storage[from].itens;
+        const itensList = itens.map((item, index) => {
+          return `*${item.nome}* - R$ ${item.valor}\n`;
+        });
+        const totalParcial = itens.reduce((total, item) => {
+          return Number(total) + Number(item.valor);
+        }, 0);
+        let msg2 =
+          `✏️ *RESUMO DO CARRINHO* \n` +
+          `\n${itensList.join("")}` +
+          `\nSubtotal: R$ ${totalParcial.toFixed(2)}\n`;
+        storage[from].stage = 2;
+        await client.sendButtons(from, msg2, buttons2, " ");
+      } else if (message == "REMOVER ITEM") {
+        const itens = storage[from].itens;
+        const itensList = itens.map((item, index) => {
+          return `${index+1}.*${item.nome}* - R$ ${item.valor}\n`;
+        });
+        let msgRemover =
+          `✏️ *REMOVER ITEM* \n` +
+          `\n${itensList.join("")}` +
+          `\nDigite o número do item que deseja remover do carrinho.\n`;
+        storage[from].stage = 6;
+        await client.sendText(from, msgRemover);
       } else if (message == "FINALIZAR PEDIDO") {
         storage[from].stage = 3;
         await client.sendText(
@@ -107,15 +138,14 @@ export const stageTwo = {
             };
             array.push(itemList);
           }
-          storage[from].categoria = "";
-          storage[from].categoria = message;
+          //storage[from].categoria = message;
           await client
             .sendListMenu(
               from,
               `${itensList[0].categoria}`,
               "subTitle",
               "Escolha um item por vez e monte seu carrinho.",
-              `${(itensList[0].categoria).toUpperCase()}`,
+              `CARDÁPIO`,
               array
             )
             .then((result) => {
@@ -125,7 +155,7 @@ export const stageTwo = {
               console.error("Error when sending: ", erro); //return object error
             });
         });
-      } else if (message == "OUTRA CATEGORIA") {
+      } else if (message == "OUTRA CATEGORIA" || message == "ADICIONAR MAIS") {
         await getAllCategorias().then(async (data) => {
           const categorias = data.map((item) => {
             return item.categoria;
@@ -179,7 +209,7 @@ export const stageTwo = {
               let msg2 =
                 `✅ *${item.nome}* adicionado ao *CARRINHO*! \n` +
                 `\nCarrinho: \n${itensList.join("")}` +
-                `\nSubtotal: R$ ${Math.ceil(totalParcial).toFixed(2)}\n`;
+                `\nSubtotal: R$ ${totalParcial.toFixed(2)}\n`;
               await client.sendButtons(from, msg2, buttons, " ");
             });
           }

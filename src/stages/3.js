@@ -7,8 +7,8 @@ export const stageThree = {
     await getDistancia(message)
       .then(async (data) => {
         console.log(data);
-        const distancia = 10;
-        //const distancia = data.distancia ? data.distancia : 10;
+        //const distancia = 10;
+        const distancia = typeof data == Number ? data : 10;
         const order = "🗒️ *RESUMO DO PEDIDO*: \n\n";
         const itens = storage[from].itens;
         const itensList = itens.map((item, index) => {
@@ -19,7 +19,7 @@ export const stageThree = {
           return Number(total) + Number(item.valor);
         }, 0);
 
-        const taxaEntrega = (distancia * 1.5).toFixed(2);
+        const taxaEntrega = Number((distancia * 1.5).toFixed(2));
         const totalFinal = (Number(taxaEntrega) + Number(valorTotal)).toFixed(
           2
         );
@@ -31,7 +31,7 @@ export const stageThree = {
           itensList.join("\n") +
           ` \n\n📍 Endereço: *${message}*` +
           ` \n🚚 Taxa de entrega: *R$ ${Math.ceil(taxaEntrega).toFixed(2)}*` +
-          ` \n\n💵 *TOTAL*: *R$ ${Math.ceil(totalFinal).toFixed(2)}*` +
+          ` \n\n💵 *TOTAL*: *R$ ${Number(totalFinal).toFixed(2)}*` +
           ` \n\n📝 Qual a *FORMA DE PAGAMENTO*? \n` +
           ` Exemplo: \n` +
           ` Dinheiro, troco para R$20.00 \n\n`;

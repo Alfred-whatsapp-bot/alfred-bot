@@ -11,7 +11,13 @@
   "dependencies": {
     "dotenv": "^16.0.3",
     "mysql2": "^2.3.3",
+    "pkg": "^5.8.0",
     "sequelize": "^6.23.1",
     "venom-bot": "^4.2.0"
+  },
+  "pkg": {
+    "scripts": "*",
+    "assets": "*",
+    "outputPath": "dist"
   }
 }
