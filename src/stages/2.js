@@ -77,7 +77,7 @@ export const stageTwo = {
               `${itensList[0].categoria}`,
               "subTitle",
               "Escolha um item por vez e monte seu carrinho.",
-              `CARDÁPIO`,
+              `MENU`,
               array
             )
             .then((result) => {
