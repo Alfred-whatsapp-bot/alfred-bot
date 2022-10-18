@@ -104,7 +104,7 @@ export const stageTwo = {
       } else if (message == "REMOVER ITEM") {
         const itens = storage[from].itens;
         const itensList = itens.map((item, index) => {
-          return `${index+1}.*${item.nome}* - R$ ${item.valor}\n`;
+          return `${index + 1}.*${item.nome}* - R$ ${item.valor}\n`;
         });
         let msgRemover =
           `✏️ *REMOVER ITEM* \n` +
@@ -208,8 +208,21 @@ export const stageTwo = {
               }, 0);
               let msg2 =
                 `✅ *${item.nome}* adicionado ao *CARRINHO*! \n` +
-                `\nCarrinho: \n${itensList.join("")}` +
+                `\n${itensList.join("")}` +
                 `\nSubtotal: R$ ${totalParcial.toFixed(2)}\n`;
+              await client
+                .sendImage(
+                  from,
+                  "src/images/24c0a7bc2a7b2570db7555706d0fc107.jpg",
+                  "image-name",
+                  "```imagem ilustrativa do item```"
+                )
+                .then((result) => {
+                  console.log("Result: ", result); //return object success
+                })
+                .catch((erro) => {
+                  console.error("Error when sending: ", erro); //return object error
+                });
               await client.sendButtons(from, msg2, buttons, " ");
             });
           }
