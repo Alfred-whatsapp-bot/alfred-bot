@@ -54,6 +54,7 @@ export function getStage({ from }) {
     categoria: "",
     order: "",
     problem: "",
+    payment: "",
   };
 
   return storage[from].stage;

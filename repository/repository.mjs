@@ -3,10 +3,15 @@ import { Produtos } from "../services/produtos.model.cjs";
 
 export const getDistancia = async (address) => {
   await fetch(
-    "https://alfred-database.rj.r.appspot.com/location?address=" + address
-  ).then((res) => {
-    return res.json();
-  });
+    "https://chatbot-location-api.herokuapp.com/location?address=" + address
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 export const getAllProdutos = async () => {

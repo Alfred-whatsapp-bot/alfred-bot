@@ -38,7 +38,7 @@ export const stageOne = {
             from,
             "Escolha uma categoria",
             "Subtitulo",
-            " ",
+            "Escolha uma categoria para começar seu pedido.",
             "MENU",
             array
           )
