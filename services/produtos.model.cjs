@@ -29,6 +29,10 @@ const Produtos = sequelize.define(
       type: DataTypes.BOOLEAN,
       allowNull: false,
     },
+    descricao: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   },
   {
     timestamps: false,

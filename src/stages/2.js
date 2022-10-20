@@ -62,8 +62,8 @@ export const stageTwo = {
               title: ` `,
               rows: [
                 {
-                  title: `${itens.nome}`,
-                  description: `R$ ${itens.valor}`,
+                  title: `${itens.nome} - R$ ${itens.valor}`,
+                  description: `${itens.descricao}`,
                 },
               ],
             };
@@ -131,14 +131,13 @@ export const stageTwo = {
               title: ` `,
               rows: [
                 {
-                  title: `${itens.nome}`,
-                  description: `R$ ${itens.valor}`,
+                  title: `${itens.nome} - R$ ${itens.valor}`,
+                  description: `${itens.descricao}`,
                 },
               ],
             };
             array.push(itemList);
           }
-          //storage[from].categoria = message;
           await client
             .sendListMenu(
               from,
@@ -175,7 +174,6 @@ export const stageTwo = {
             };
             array.push(categoriaList);
           }
-          console.log(array);
           storage[from].stage = 2;
           await client
             .sendListMenu(
