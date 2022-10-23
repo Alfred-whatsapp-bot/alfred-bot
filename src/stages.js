@@ -55,6 +55,11 @@ export function getStage({ from }) {
     order: "",
     problem: "",
     payment: "",
+    cliente: {
+      nome: "",
+      telefone: "",
+      endereco: "",
+    },
   };
 
   return storage[from].stage;

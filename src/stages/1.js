@@ -3,16 +3,16 @@ import { getAllCategorias } from "../../repository/repository.mjs";
 
 export const stageOne = {
   async exec({ from, message, client }) {
+    const phone = from.split("@");
     if (message == "FALAR COM ATENDENTE") {
       storage[from].stage = 5;
       storage[from].itens = [];
-      const phone = from.split("@");
 
       const msg =
         "🔴 Aguarde enquanto eu conecto você com um atendente. \n\n ```Volte Sempre!```";
 
       client.sendText(from, msg); // Teste envio de mensagem para grupo
-    } else {
+    } else if (message == "FAZER PEDIDO" || message == "AVANÇAR SEM CADASTRO") {
       await getAllCategorias().then(async (data) => {
         const categorias = data.map((item) => {
           return item.categoria;
@@ -49,6 +49,12 @@ export const stageOne = {
             console.error("Error when sending: ", erro); //return object error
           });
       });
+    } else {
+      storage[from].stage = 0;
+      storage[from].cliente = {
+        nome: message,
+        telefone: phone,
+      };
     }
   },
 };
