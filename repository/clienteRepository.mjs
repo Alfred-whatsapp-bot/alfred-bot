@@ -5,10 +5,10 @@ export const getAllClientes = async () => {
   return clientes.map((cliente) => cliente.toJSON());
 };
 
-export const getClienteByPhoneNumber = async (phoneNumber) => {
+export const getClienteByPhoneNumber = async (telefone) => {
   const cliente = await Cliente.findAll({
     where: {
-      telefone: phoneNumber,
+      telefone: telefone,
     },
   });
   return cliente.map((produto) => produto.toJSON());
@@ -56,10 +56,10 @@ export const updateCliente = async (cliente, cpf) => {
   return clienteUpdated;
 };
 
-export const deleteCliente = async (phoneNumber) => {
+export const deleteCliente = async (telefone) => {
   const clienteDeleted = await Cliente.destroy({
     where: {
-      phoneNumber: phoneNumber,
+      telefone: telefone,
     },
   });
   return clienteDeleted;
