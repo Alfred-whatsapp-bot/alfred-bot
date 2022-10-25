@@ -193,7 +193,7 @@ export const stageTwo = {
         });
       } else {
         const msgSplit = message.split("\n", 1)[0];
-        const msgSplit2 = msgSplit.substring(0, msgSplit.indexOf("-"));
+        const msgSplit2 = msgSplit.substring(0, msgSplit.indexOf(" -"));
         await getProdutoByName(msgSplit2).then(async (data) => {
           if (data.length > 0) {
             data.map(async (item) => {
