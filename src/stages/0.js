@@ -57,7 +57,7 @@ export const initialStage = {
             from,
             `Olá, sou o assistente virtual do restaurante! Para começar, poderia me informar seu nome?`,
             buttonsDeny,
-            "O que deseja?"
+            "Me lembrarei nos próximos pedidos!"
           )
           .then((result) => {
             console.log("Result: ", result); //return object success

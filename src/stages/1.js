@@ -70,8 +70,19 @@ export const stageOne = {
         telefone: phone[0],
       };
       await createCliente(storage[from].cliente).then(async (data) => {
-        let ret = (storage[from].stage = 0);
-        return ret;
+        await client
+          .sendButtons(
+            from,
+            `Olá ${data.nome}, seja bem-vindo(a)!`,
+            buttons,
+            "O que deseja?"
+          )
+          .then((result) => {
+            console.log("Result: ", result); //return object success
+          })
+          .catch((erro) => {
+            console.error("Error when sending: ", erro); //return object error
+          });
       });
     }
   },
