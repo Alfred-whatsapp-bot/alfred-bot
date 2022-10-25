@@ -1,5 +1,6 @@
 import { storage } from "../storage.js";
 import { getAllCategorias } from "../../repository/repository.mjs";
+import { createCliente } from "../../repository/clienteRepository.mjs";
 
 export const stageOne = {
   async exec({ from, message, client }) {
@@ -34,11 +35,24 @@ export const stageOne = {
         }
         storage[from].stage = 2;
         await client
+          .sendFile(
+            from,
+            "src/images/CARDAPIO.pdf",
+            "CARDAPIO",
+            "Veja o cardápio completo aqui."
+          )
+          .then((result) => {
+            console.log("Result: ", result); //return object success
+          })
+          .catch((erro) => {
+            console.error("Error when sending: ", erro); //return object error
+          });
+        await client
           .sendListMenu(
             from,
-            "Escolha uma categoria",
+            "Categorias",
             "Subtitulo",
-            "Escolha uma categoria para começar seu pedido.",
+            "Escolha uma e comece seu pedido.",
             "MENU",
             array
           )
@@ -53,8 +67,12 @@ export const stageOne = {
       storage[from].stage = 0;
       storage[from].cliente = {
         nome: message,
-        telefone: phone,
+        telefone: phone[0],
       };
+      await createCliente(storage[from].cliente).then(async (data) => {
+        let ret = (storage[from].stage = 0);
+        return ret;
+      });
     }
   },
 };

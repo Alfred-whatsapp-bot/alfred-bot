@@ -1,8 +1,13 @@
 import { storage } from "../storage.js";
-import { getAllClientes } from "../../repository/clienteRepository.mjs";
+import {
+  getAllClientes,
+  getClienteByPhoneNumber,
+} from "../../repository/clienteRepository.mjs";
 
 export const initialStage = {
   async exec({ from, client }) {
+    const phone = from.split("@");
+    console.log(phone);
     const buttons = [
       {
         buttonText: {
@@ -24,11 +29,11 @@ export const initialStage = {
       },
     ];
 
-    await getAllClientes().then(async (clientes) => {
+    await getClienteByPhoneNumber(phone[0]).then(async (clientes) => {
       const cliente = await clientes.find(
         async (cliente) => cliente.telefone === from
       );
-      if (cliente !== null) {
+      if (cliente !== undefined) {
         storage[from].stage = 1;
         await client
           .sendButtons(

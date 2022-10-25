@@ -23,15 +23,16 @@ const Cliente = sequelize.define(
     },
     cpf: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     endereco: {
       type: DataTypes.BOOLEAN,
-      allowNull: false,
+      allowNull: true,
     },
   },
   {
     timestamps: false,
+    freezeTableName: true,
   }
 );
 

@@ -43,7 +43,8 @@ export const getClienteByCpf = async (cpf) => {
 
 export const createCliente = async (cliente) => {
   const clienteCreated = await Cliente.create(cliente);
-  return clienteCreated._modelOptions.instance.toJSON();
+  //return clienteCreated._modelOptions.instance.toJSON();
+  return;
 };
 
 export const updateCliente = async (cliente, cpf) => {
