@@ -28,17 +28,17 @@ export const stageTwo = {
     const buttons2 = [
       {
         buttonText: {
-          displayText: "REMOVER ITEM",
-        },
-      },
-      {
-        buttonText: {
           displayText: "ADICIONAR MAIS",
         },
       },
       {
         buttonText: {
           displayText: "FINALIZAR PEDIDO",
+        },
+      },
+      {
+        buttonText: {
+          displayText: "REMOVER ITEM",
         },
       },
     ];
