@@ -76,7 +76,7 @@ export const stageOne = {
           });
       });
     } else {
-      storage[from].stage = 0;
+      storage[from].stage = 1;
       storage[from].cliente = {
         nome: message,
         telefone: phone[0],
