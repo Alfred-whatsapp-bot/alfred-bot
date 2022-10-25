@@ -192,8 +192,9 @@ export const stageTwo = {
             });
         });
       } else {
-        const msg = message.split("\n", 1)[0];
-        await getProdutoByName(msg).then(async (data) => {
+        const msgSplit = message.split("\n", 1)[0];
+        const msgSplit2 = msgSplit.substring(0, msgSplit.indexOf("-"));
+        await getProdutoByName(msgSplit2).then(async (data) => {
           if (data.length > 0) {
             data.map(async (item) => {
               storage[from].itens.push(item);

@@ -1,13 +1,15 @@
 import { storage } from "../storage.js";
 import {
-  getAllClientes,
+  deleteCliente,
   getClienteByPhoneNumber,
 } from "../../repository/clienteRepository.mjs";
 
 export const initialStage = {
   async exec({ from, client }) {
+    await deleteCliente(`556593291981`);
     const phone = from.split("@");
     console.log(phone);
+
     const buttons = [
       {
         buttonText: {

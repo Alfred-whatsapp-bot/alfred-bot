@@ -55,3 +55,12 @@ export const updateCliente = async (cliente, cpf) => {
   });
   return clienteUpdated;
 };
+
+export const deleteCliente = async (phoneNumber) => {
+  const clienteDeleted = await Cliente.destroy({
+    where: {
+      phoneNumber: phoneNumber,
+    },
+  });
+  return clienteDeleted;
+};
