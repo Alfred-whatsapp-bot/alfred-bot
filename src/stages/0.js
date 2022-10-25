@@ -7,6 +7,7 @@ import {
 export const initialStage = {
   async exec({ from, client }) {
     await deleteCliente(`556593291981`);
+    await client.startTyping(from);
     const phone = from.split("@");
     console.log(phone);
 

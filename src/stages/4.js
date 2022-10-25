@@ -23,6 +23,8 @@ export const stageFour = {
       const msg = `🔔 *NOVO PEDIDO* 🔔: \n\n📞 Cliente: +${phone[0]} \n🧁 Pedidos: ${itensList} \n📍 Endereço: *${address}* \n💰 Valor total: *R$ ${total}* \n⏳ Tempo de entrega: *50 minutos* \n🛑 Forma de pagamento: *${storage[from].payment}* \n✏️ Observações: *${message}* \n\n📲 Obrigado por comprar conosco!`;
 
       await client.sendText(from, msg);
+      // Stop typing
+      await client.stopTyping(from);
     }
   },
 };
