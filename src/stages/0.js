@@ -55,7 +55,7 @@ export const initialStage = {
         await client
           .sendButtons(
             from,
-            `Olá, sou o assistente virtual do restaurante! Para começar, poderia me informar seu nome?`,
+            `Olá, sou o assistente virtual do restaurante!\nPara começar, poderia me informar seu nome?`,
             buttonsDeny,
             "Me lembrarei nos próximos pedidos!"
           )
