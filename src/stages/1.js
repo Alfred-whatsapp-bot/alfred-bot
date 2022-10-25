@@ -5,6 +5,18 @@ import { createCliente } from "../../repository/clienteRepository.mjs";
 export const stageOne = {
   async exec({ from, message, client }) {
     const phone = from.split("@");
+    const buttons = [
+      {
+        buttonText: {
+          displayText: "FAZER PEDIDO",
+        },
+      },
+      {
+        buttonText: {
+          displayText: "FALAR COM ATENDENTE",
+        },
+      },
+    ];
     if (message == "FALAR COM ATENDENTE") {
       storage[from].stage = 5;
       storage[from].itens = [];
