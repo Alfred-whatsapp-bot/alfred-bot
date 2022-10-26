@@ -13,6 +13,7 @@
     "mysql2": "^2.3.3",
     "pkg": "^5.8.0",
     "sequelize": "^6.23.1",
+    "sync-fetch": "^0.4.2",
     "venom-bot": "^4.2.0"
   },
   "pkg": {
