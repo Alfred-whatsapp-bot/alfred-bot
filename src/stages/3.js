@@ -4,23 +4,23 @@ import { buttons } from "../helpers";
 
 export const stageThree = {
   async exec({ from, message, client }) {
-    const buttons = [
-      {
-        buttonText: {
-          displayText: "CARTÃO",
-        },
-      },
-      {
-        buttonText: {
-          displayText: "DINHEIRO",
-        },
-      },
-      {
-        buttonText: {
-          displayText: "OUTRO",
-        },
-      },
-    ];
+    // const buttons = [
+    //   {
+    //     buttonText: {
+    //       displayText: "CARTÃO",
+    //     },
+    //   },
+    //   {
+    //     buttonText: {
+    //       displayText: "DINHEIRO",
+    //     },
+    //   },
+    //   {
+    //     buttonText: {
+    //       displayText: "OUTRO",
+    //     },
+    //   },
+    // ];
     storage[from].address = message;
     await getDistancia(message)
       .then(async (data) => {
@@ -51,7 +51,12 @@ export const stageThree = {
           ` \n🚚 Taxa de entrega: *R$ ${Math.ceil(taxaEntrega).toFixed(2)}*` +
           ` \n\n💵 *TOTAL*: *R$ ${Number(totalFinal).toFixed(2)}*` +
           ` \n\n📝 Qual a *FORMA DE PAGAMENTO*? \n`;
-        await client.sendButtons(from, msg, buttons, " ");
+        await client.sendButtons(
+          from,
+          msg,
+          buttons(["CARTÃO", "DINHEIRO", "OUTROS"]),
+          " "
+        );
 
         storage[from].stage = 4;
       })
