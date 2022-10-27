@@ -4,7 +4,7 @@ import {
   getAllCategorias,
   getProdutoByName,
 } from "../../repository/repository.mjs";
-import { buttons } from "../helpers";
+import { buttons } from "../helpers/helpers";
 
 export const stageTwo = {
   async exec({ from, message, client }) {

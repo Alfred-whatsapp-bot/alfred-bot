@@ -1,5 +1,5 @@
 import { storage } from "../storage.js";
-import { buttons } from "../helpers";
+import { buttons } from "../helpers/helpers";
 
 export const removalStage = {
   async exec({ from, message, client }) {

@@ -3,7 +3,7 @@ import {
   deleteCliente,
   getClienteByPhoneNumber,
 } from "../../repository/clienteRepository.mjs";
-import { buttons } from "../helpers";
+import { buttons } from "../helpers/helpers";
 
 export const initialStage = {
   async exec({ from, client }) {

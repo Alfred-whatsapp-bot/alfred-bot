@@ -1,6 +1,6 @@
 import { storage } from "../storage.js";
 import { getDistancia } from "../../repository/repository.mjs";
-import { buttons } from "../helpers";
+import { buttons } from "../helpers/helpers";
 
 export const stageThree = {
   async exec({ from, message, client }) {

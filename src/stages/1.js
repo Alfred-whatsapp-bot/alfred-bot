@@ -4,7 +4,7 @@ import {
   createCliente,
   deleteCliente,
 } from "../../repository/clienteRepository.mjs";
-import { buttons } from "../helpers";
+import { buttons } from "../helpers/helpers";
 
 export const stageOne = {
   async exec({ from, message, client }) {
