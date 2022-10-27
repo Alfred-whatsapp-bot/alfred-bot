@@ -40,7 +40,7 @@
     "venom-bot": "^4.2.0"
   },
   "engines": {
-    "node": ">=14.x"
+    "node": "14.x"
   },
   "pkg": {
     "scripts": "*",
