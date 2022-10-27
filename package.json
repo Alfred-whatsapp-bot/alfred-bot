@@ -22,7 +22,8 @@
     "http-ctrl:reload": "pm2 reload wchatbotcp",
     "http-ctrl:log": "pm2 logs wchatbotcp",
     "conversations": "tail -f logs/conversations.log",
-    "test": "jest"
+    "test": "jest",
+    "heroku-postbuild": "yarn dev && yarn http-ctrl:dev"
   },
   "dependencies": {
     "child_process": "^1.0.2",
