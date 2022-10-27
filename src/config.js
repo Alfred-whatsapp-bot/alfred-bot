@@ -32,6 +32,7 @@ export const venomOptions = {
       "--single-process",
       "--no-zygote",
       "--disable-setuid-sandbox",
+      '--disable-extensions',
     ],
   }, // Will be passed to puppeteer.launch. Use --no-sandbox with Docker
   disableSpins: true, // Will disable Spinnies animation, useful for containers (docker) for a better log
