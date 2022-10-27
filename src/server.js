@@ -89,7 +89,8 @@ export async function session(name, conversation) {
  * @param {String} name
  * @param {Number} port
  */
-export async function httpCtrl(name, port = 4000) {
+const port = process.env.PORT || 5000;
+export async function httpCtrl(name, port) {
   if (!fs.existsSync("logs")) {
     fs.mkdirSync("logs", { recursive: true });
     fs.writeFileSync("logs/conversations.log", "");
