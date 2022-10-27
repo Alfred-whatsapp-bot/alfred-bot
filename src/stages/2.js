@@ -4,44 +4,45 @@ import {
   getAllCategorias,
   getProdutoByName,
 } from "../../repository/repository.mjs";
+import { buttons } from "../helpers";
 
 export const stageTwo = {
   async exec({ from, message, client }) {
-    const buttons = [
-      {
-        buttonText: {
-          displayText: "OUTRO ITEM",
-        },
-      },
-      {
-        buttonText: {
-          displayText: "OUTRA CATEGORIA",
-        },
-      },
-      {
-        buttonText: {
-          displayText: "FINALIZAR CARRINHO",
-        },
-      },
-    ];
+    // const buttons = [
+    //   {
+    //     buttonText: {
+    //       displayText: "OUTRO ITEM",
+    //     },
+    //   },
+    //   {
+    //     buttonText: {
+    //       displayText: "OUTRA CATEGORIA",
+    //     },
+    //   },
+    //   {
+    //     buttonText: {
+    //       displayText: "FINALIZAR CARRINHO",
+    //     },
+    //   },
+    // ];
 
-    const buttons2 = [
-      {
-        buttonText: {
-          displayText: "ADICIONAR MAIS",
-        },
-      },
-      {
-        buttonText: {
-          displayText: "REMOVER ITEM",
-        },
-      },
-      {
-        buttonText: {
-          displayText: "FINALIZAR PEDIDO",
-        },
-      },
-    ];
+    // const buttons2 = [
+    //   {
+    //     buttonText: {
+    //       displayText: "ADICIONAR MAIS",
+    //     },
+    //   },
+    //   {
+    //     buttonText: {
+    //       displayText: "REMOVER ITEM",
+    //     },
+    //   },
+    //   {
+    //     buttonText: {
+    //       displayText: "FINALIZAR PEDIDO",
+    //     },
+    //   },
+    // ];
 
     await getAllCategorias().then(async (data) => {
       const categorias = data.map((item) => {
@@ -100,7 +101,12 @@ export const stageTwo = {
           `\n${itensList.join("")}` +
           `\nSubtotal: R$ ${totalParcial.toFixed(2)}\n`;
         storage[from].stage = 2;
-        await client.sendButtons(from, msg2, buttons2, " ");
+        await client.sendButtons(
+          from,
+          msg2,
+          buttons(["ADICIONAR MAIS", "REMOVER ITEM", "FINALIZAR PEDIDO"]),
+          " "
+        );
       } else if (message == "REMOVER ITEM") {
         const itens = storage[from].itens;
         const itensList = itens.map((item, index) => {
@@ -222,7 +228,16 @@ export const stageTwo = {
                 .catch((erro) => {
                   console.error("Error when sending: ", erro); //return object error
                 });
-              await client.sendButtons(from, msg2, buttons, " ");
+              await client.sendButtons(
+                from,
+                msg2,
+                buttons([
+                  "OUTRO ITEM",
+                  "OUTRA CATEGORIA",
+                  "FINALIZAR CARRINHO",
+                ]),
+                " "
+              );
             });
           }
         });

@@ -1,34 +1,15 @@
 import { storage } from "../storage.js";
 import { getAllCategorias } from "../../repository/repository.mjs";
-import { createCliente, deleteCliente } from "../../repository/clienteRepository.mjs";
+import {
+  createCliente,
+  deleteCliente,
+} from "../../repository/clienteRepository.mjs";
+import { buttons } from "../helpers";
 
 export const stageOne = {
   async exec({ from, message, client }) {
     const phone = from.split("@");
-    const buttonsDeny = [
-      {
-        buttonText: {
-          displayText: "AVANÇAR SEM CADASTRO",
-        },
-      },
-    ];
-    const buttons = [
-      {
-        buttonText: {
-          displayText: "FAZER PEDIDO",
-        },
-      },
-      {
-        buttonText: {
-          displayText: "FALAR COM ATENDENTE",
-        },
-      },
-      {
-        buttonText: {
-          displayText: "CORRIGIR NOME",
-        },
-      },
-    ];
+
     if (message == "FALAR COM ATENDENTE") {
       storage[from].stage = 5;
       storage[from].itens = [];
@@ -44,7 +25,7 @@ export const stageOne = {
           .sendButtons(
             from,
             `Olá, sou o assistente virtual do restaurante!\nPara começar, poderia me informar seu nome?`,
-            buttonsDeny,
+            buttons(["AVANÇAR SEM CADASTRO"]),
             "Me lembrarei nos próximos pedidos!"
           )
           .then((result) => {
@@ -115,7 +96,7 @@ export const stageOne = {
           .sendButtons(
             from,
             `Olá ${data.nome}, seja bem-vindo(a)!`,
-            buttons,
+            buttons(["FAZER PEDIDO", "FALAR COM ATENDENTE", "CORRIGIR NOME"]),
             "O que deseja?"
           )
           .then((result) => {

@@ -3,39 +3,39 @@ import {
   deleteCliente,
   getClienteByPhoneNumber,
 } from "../../repository/clienteRepository.mjs";
+import { buttons } from "../helpers";
 
 export const initialStage = {
   async exec({ from, client }) {
     await deleteCliente(`556593291981`);
     await client.startTyping(from);
     const phone = from.split("@");
-    console.log(phone);
 
-    const buttons = [
-      {
-        buttonText: {
-          displayText: "FAZER PEDIDO",
-        },
-      },
-      {
-        buttonText: {
-          displayText: "FALAR COM ATENDENTE",
-        },
-      },
-      {
-        buttonText: {
-          displayText: "CORRIGIR NOME",
-        },
-      },
-    ];
+    // const buttons = [
+    //   {
+    //     buttonText: {
+    //       displayText: "FAZER PEDIDO",
+    //     },
+    //   },
+    //   {
+    //     buttonText: {
+    //       displayText: "FALAR COM ATENDENTE",
+    //     },
+    //   },
+    //   {
+    //     buttonText: {
+    //       displayText: "CORRIGIR NOME",
+    //     },
+    //   },
+    // ];
 
-    const buttonsDeny = [
-      {
-        buttonText: {
-          displayText: "AVANÇAR SEM CADASTRO",
-        },
-      },
-    ];
+    // const buttonsDeny = [
+    //   {
+    //     buttonText: {
+    //       displayText: "AVANÇAR SEM CADASTRO",
+    //     },
+    //   },
+    // ];
 
     await getClienteByPhoneNumber(phone[0]).then(async (clientes) => {
       const cliente = await clientes.find(
@@ -47,7 +47,7 @@ export const initialStage = {
           .sendButtons(
             from,
             `Olá ${cliente.nome}, seja bem-vindo(a)!`,
-            buttons,
+            buttons(["FAZER PEDIDO", "FALAR COM ATENDENTE", "CORRIGIR NOME"]),
             "O que deseja?"
           )
           .then((result) => {
@@ -62,7 +62,7 @@ export const initialStage = {
           .sendButtons(
             from,
             `Olá, sou o assistente virtual do restaurante!\nPara começar, poderia me informar seu nome?`,
-            buttonsDeny,
+            buttons(["AVANÇAR SEM CADASTRO"]),
             "Me lembrarei nos próximos pedidos!"
           )
           .then((result) => {
