@@ -37,6 +37,9 @@
     "sharp": "^0.31.1",
     "sync-fetch": "^0.4.2",
     "venom-bot": "^4.2.0"
+  }, 
+  "engines": {
+    "node": "14.x"
   },
   "pkg": {
     "scripts": "*",
