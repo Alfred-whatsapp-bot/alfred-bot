@@ -23,7 +23,7 @@
     "http-ctrl:log": "pm2 logs wchatbotcp",
     "conversations": "tail -f logs/conversations.log",
     "test": "jest",
-    "heroku-postbuild": "npm run dev && npm run http-ctrl:dev"
+    "heroku-postbuild": "yarn dev && yarn http-ctrl:dev"
   },
   "dependencies": {
     "child_process": "^1.0.2",
@@ -40,7 +40,7 @@
     "venom-bot": "^4.2.0"
   },
   "engines": {
-    "node": "14.x"
+    "node": ">=14.x"
   },
   "pkg": {
     "scripts": "*",
