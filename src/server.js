@@ -1,4 +1,4 @@
-import venom from "venom-bot";
+import venom from "../node_modules/venom-bot";
 import { stages, getStage } from "./stages.js";
 import { createRequire } from "module";
 import { chatbotOptions, venomOptions } from "./config";
@@ -89,7 +89,7 @@ export async function session(name, conversation) {
  * @param {String} name
  * @param {Number} port
  */
-export async function httpCtrl(name, port = 3000) {
+export async function httpCtrl(name, port = 4000) {
   if (!fs.existsSync("logs")) {
     fs.mkdirSync("logs", { recursive: true });
     fs.writeFileSync("logs/conversations.log", "");

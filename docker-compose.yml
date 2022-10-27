@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  alfred-bot:
+    container_name: alfred-bot
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    volumes:
+      - ./src:/alfred-bot/src
+    ports:
+      - '4000:4000'

@@ -34,6 +34,7 @@
     "node-fetch": "^3.2.10",
     "pkg": "^5.8.0",
     "sequelize": "^6.23.1",
+    "sharp": "^0.31.1",
     "sync-fetch": "^0.4.2",
     "venom-bot": "^4.2.0"
   },

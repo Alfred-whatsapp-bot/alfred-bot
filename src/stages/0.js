@@ -22,6 +22,11 @@ export const initialStage = {
           displayText: "FALAR COM ATENDENTE",
         },
       },
+      {
+        buttonText: {
+          displayText: "CORRIGIR NOME",
+        },
+      },
     ];
 
     const buttonsDeny = [

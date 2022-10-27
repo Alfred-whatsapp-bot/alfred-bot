@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { chatbotOptions } from "./config";
-import { httpCtrl } from "./core";
+import { httpCtrl } from "./server";
 
 /* Http chatbot control server (http://localhost:3000/) */
 /* -----------------------------------------------------*/

@@ -33,12 +33,12 @@ export const stageTwo = {
       },
       {
         buttonText: {
-          displayText: "FINALIZAR PEDIDO",
+          displayText: "REMOVER ITEM",
         },
       },
       {
         buttonText: {
-          displayText: "REMOVER ITEM",
+          displayText: "FINALIZAR PEDIDO",
         },
       },
     ];

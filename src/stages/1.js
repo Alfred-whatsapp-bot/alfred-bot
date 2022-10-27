@@ -1,10 +1,17 @@
 import { storage } from "../storage.js";
 import { getAllCategorias } from "../../repository/repository.mjs";
-import { createCliente } from "../../repository/clienteRepository.mjs";
+import { createCliente, deleteCliente } from "../../repository/clienteRepository.mjs";
 
 export const stageOne = {
   async exec({ from, message, client }) {
     const phone = from.split("@");
+    const buttonsDeny = [
+      {
+        buttonText: {
+          displayText: "AVANÇAR SEM CADASTRO",
+        },
+      },
+    ];
     const buttons = [
       {
         buttonText: {
@@ -16,6 +23,11 @@ export const stageOne = {
           displayText: "FALAR COM ATENDENTE",
         },
       },
+      {
+        buttonText: {
+          displayText: "CORRIGIR NOME",
+        },
+      },
     ];
     if (message == "FALAR COM ATENDENTE") {
       storage[from].stage = 5;
@@ -25,6 +37,23 @@ export const stageOne = {
         "🔴 Aguarde enquanto eu conecto você com um atendente. \n\n ```Volte Sempre!```";
 
       client.sendText(from, msg); // Teste envio de mensagem para grupo
+    } else if (message == "CORRIGIR NOME") {
+      await deleteCliente(phone[0]).then(async (data) => {
+        storage[from].stage = 1;
+        await client
+          .sendButtons(
+            from,
+            `Olá, sou o assistente virtual do restaurante!\nPara começar, poderia me informar seu nome?`,
+            buttonsDeny,
+            "Me lembrarei nos próximos pedidos!"
+          )
+          .then((result) => {
+            console.log("Result: ", result); //return object success
+          })
+          .catch((erro) => {
+            console.error("Error when sending: ", erro); //return object error
+          });
+      });
     } else if (message == "FAZER PEDIDO" || message == "AVANÇAR SEM CADASTRO") {
       await getAllCategorias().then(async (data) => {
         const categorias = data.map((item) => {
