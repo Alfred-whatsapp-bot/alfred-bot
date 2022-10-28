@@ -88,3 +88,4 @@ error Command failed with exit code 1.
   signal: null,
   cmd: 'yarn stop'
 }
+^C

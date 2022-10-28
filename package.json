@@ -23,7 +23,7 @@
     "http-ctrl:log": "pm2 logs wchatbotcp",
     "conversations": "tail -f logs/conversations.log",
     "test": "jest",
-    "go": "yarn http-ctrl:dev:detach & yarn dev",
+    "go": "npm run http-ctrl:dev:detach & npm run dev",
     "heroku-postbuild": "npm run http-ctrl:dev:detach & npm run dev"
   },
   "dependencies": {
