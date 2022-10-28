@@ -24,7 +24,7 @@
     "conversations": "tail -f logs/conversations.log",
     "test": "jest",
     "go": "yarn http-ctrl:dev:detach & yarn dev",
-    "heroku-postbuild": "yarn http-ctrl:dev:detach & yarn dev"
+    "heroku-postbuild": "npm run http-ctrl:dev:detach & npm run dev"
   },
   "dependencies": {
     "child_process": "^1.0.2",
