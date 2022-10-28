@@ -24,7 +24,7 @@
     "conversations": "tail -f logs/conversations.log",
     "test": "jest",
     "go": "yarn http-ctrl:dev:detach & yarn dev",
-    "heroku-postbuild": "yarn dev & yarn http-ctrl:dev:detach"
+    "heroku-postbuild": "yarn http-ctrl:dev:detach & yarn dev"
   },
   "dependencies": {
     "child_process": "^1.0.2",
@@ -41,7 +41,7 @@
     "venom-bot": "^4.2.0"
   },
   "engines": {
-    "node": ">=14.x"
+    "node": "16.x"
   },
   "pkg": {
     "scripts": "*",
