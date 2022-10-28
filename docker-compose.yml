@@ -1,28 +1,13 @@
 version: '3.8'
 
-networks:
-  proxy:
-    driver: bridge
-
 services:
-  nginx:
-    image: nginx
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
-      - ./certs:/etc/nginx/certs
-      - ./html:/usr/share/nginx/html
-    ports:
-      - '4000:4000'
-    networks:
-      - proxy
-
   alfred-bot:
     container_name: alfred-bot
-    image: luisfelipe449/alfred-bot-alfred-bot
     build:
       context: .
       dockerfile: Dockerfile
-    restart: unless-stopped
+    restart: always
     volumes:
       - ./src:/alfred-bot/src
-
+    ports:
+      - '4000:4000'
