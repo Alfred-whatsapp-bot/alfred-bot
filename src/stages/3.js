@@ -4,23 +4,7 @@ import { buttons } from "../helpers/helpers";
 
 export const stageThree = {
   async exec({ from, message, client }) {
-    // const buttons = [
-    //   {
-    //     buttonText: {
-    //       displayText: "CARTÃO",
-    //     },
-    //   },
-    //   {
-    //     buttonText: {
-    //       displayText: "DINHEIRO",
-    //     },
-    //   },
-    //   {
-    //     buttonText: {
-    //       displayText: "OUTRO",
-    //     },
-    //   },
-    // ];
+  
     storage[from].address = message;
     await getDistancia(message)
       .then(async (data) => {

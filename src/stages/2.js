@@ -8,42 +8,6 @@ import { buttons } from "../helpers/helpers";
 
 export const stageTwo = {
   async exec({ from, message, client }) {
-    // const buttons = [
-    //   {
-    //     buttonText: {
-    //       displayText: "OUTRO ITEM",
-    //     },
-    //   },
-    //   {
-    //     buttonText: {
-    //       displayText: "OUTRA CATEGORIA",
-    //     },
-    //   },
-    //   {
-    //     buttonText: {
-    //       displayText: "FINALIZAR CARRINHO",
-    //     },
-    //   },
-    // ];
-
-    // const buttons2 = [
-    //   {
-    //     buttonText: {
-    //       displayText: "ADICIONAR MAIS",
-    //     },
-    //   },
-    //   {
-    //     buttonText: {
-    //       displayText: "REMOVER ITEM",
-    //     },
-    //   },
-    //   {
-    //     buttonText: {
-    //       displayText: "FINALIZAR PEDIDO",
-    //     },
-    //   },
-    // ];
-
     await getAllCategorias().then(async (data) => {
       const categorias = data.map((item) => {
         storage[from].category = item;

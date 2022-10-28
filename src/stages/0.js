@@ -3,39 +3,12 @@ import {
   deleteCliente,
   getClienteByPhoneNumber,
 } from "../../repository/clienteRepository.mjs";
-import { buttons } from "../helpers/helpers";
+import { buttons, list } from "../helpers/helpers";
 
 export const initialStage = {
   async exec({ from, client }) {
     await deleteCliente(`556593291981`);
-    await client.startTyping(from);
     const phone = from.split("@");
-
-    // const buttons = [
-    //   {
-    //     buttonText: {
-    //       displayText: "FAZER PEDIDO",
-    //     },
-    //   },
-    //   {
-    //     buttonText: {
-    //       displayText: "FALAR COM ATENDENTE",
-    //     },
-    //   },
-    //   {
-    //     buttonText: {
-    //       displayText: "CORRIGIR NOME",
-    //     },
-    //   },
-    // ];
-
-    // const buttonsDeny = [
-    //   {
-    //     buttonText: {
-    //       displayText: "AVANÇAR SEM CADASTRO",
-    //     },
-    //   },
-    // ];
 
     await getClienteByPhoneNumber(phone[0]).then(async (clientes) => {
       const cliente = await clientes.find(
