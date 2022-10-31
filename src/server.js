@@ -14,7 +14,7 @@ import bodyParser from "body-parser";
 import { Users } from "../model/user.model.cjs";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-const auth = require("./middleware/auth");
+import auth from "../middleware/auth.js";
 
 /**
  * Logging debug

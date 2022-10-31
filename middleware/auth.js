@@ -1,4 +1,4 @@
-import { verify } from "jsonwebtoken";
+import verify from "jsonwebtoken";
 
 const config = process.env;
 
