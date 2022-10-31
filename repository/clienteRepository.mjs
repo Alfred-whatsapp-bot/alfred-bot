@@ -1,4 +1,4 @@
-import { Cliente } from "../services/cliente.model.cjs";
+import { Cliente } from "../model/cliente.model.cjs";
 
 export const getAllClientes = async () => {
   const clientes = await Cliente.findAll();

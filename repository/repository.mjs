@@ -1,5 +1,5 @@
 import fetch from "node-fetch";
-import { Produtos } from "../services/produtos.model.cjs";
+import { Produtos } from "../model/produtos.model.cjs";
 
 export const getDistancia = async (address) => {
   await fetch(

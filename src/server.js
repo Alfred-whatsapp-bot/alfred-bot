@@ -10,12 +10,11 @@ import { exec } from "child_process";
 const require = createRequire(import.meta.url);
 require("dotenv").config();
 import bodyParser from "body-parser";
-import {
-  getUserByEmail,
-  createUser,
-} from "../../repository/userRepository.mjs";
+//import { getUserByEmail, createUser } from "../repository/userRepository.mjs";
+import { Users } from "../model/user.model.cjs";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
-app.use(bodyParser.json());
 /**
  * Logging debug
  * @param {String} type
@@ -102,6 +101,7 @@ export async function httpCtrl(name, port = 4000) {
     fs.writeFileSync("logs/conversations.log", "");
   }
   const app = express();
+  app.use(bodyParser.json()); // support json encoded bodies
   const httpServer = http.createServer(app);
   httpServer.listen(port, () => {
     console.log(
@@ -210,7 +210,6 @@ export async function httpCtrl(name, port = 4000) {
   app.post("/register", async (req, res) => {
     // Our register logic starts here
     try {
-      // Get user input
       const { nome, email, senha } = req.body;
 
       // Validate user input
@@ -220,20 +219,20 @@ export async function httpCtrl(name, port = 4000) {
 
       // check if user already exist
       // Validate if user exist in our database
-      const oldUser = await getUserByEmail({ email });
+      const oldUser = await Users.findOne({ email });
 
       if (oldUser) {
         return res.status(409).send("User Already Exist. Please Login");
       }
 
       //Encrypt user password
-      const encryptedPassword = await bcrypt.hash(password, 10);
+      const encryptedPassword = await bcrypt.hash(senha, 10);
 
       // Create user in our database
-      const user = await createUser({
+      const user = await Users.create({
         nome,
         email: email.toLowerCase(), // sanitize: convert email to lowercase
-        senha: encryptedPassword, // save encrypted password
+        senha: encryptedPassword,
       });
 
       // Create token
@@ -246,7 +245,6 @@ export async function httpCtrl(name, port = 4000) {
       );
       // save user token
       user.token = token;
-
       // return new user
       res.status(201).json(user);
     } catch (err) {
