@@ -14,6 +14,7 @@ import bodyParser from "body-parser";
 import { Users } from "../model/user.model.cjs";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+const auth = require("./middleware/auth");
 
 /**
  * Logging debug
@@ -219,7 +220,7 @@ export async function httpCtrl(name, port = 4000) {
 
       // check if user already exist
       // Validate if user exist in our database
-      const oldUser = await Users.findOne({ email });
+      const oldUser = await Users.findOne({ where: { email: email } });
 
       if (oldUser) {
         return res.status(409).send("User Already Exist. Please Login");
@@ -245,6 +246,7 @@ export async function httpCtrl(name, port = 4000) {
       );
       // save user token
       user.token = token;
+
       // return new user
       res.status(201).json(user);
     } catch (err) {
@@ -256,16 +258,16 @@ export async function httpCtrl(name, port = 4000) {
     // Our login logic starts here
     try {
       // Get user input
-      const { email, password } = req.body;
+      const { email, senha } = req.body;
 
       // Validate user input
-      if (!(email && password)) {
+      if (!(email && senha)) {
         res.status(400).send("All input is required");
       }
       // Validate if user exist in our database
-      const user = await User.findOne({ email });
+      const user = await Users.findOne({ where: { email: email } });
 
-      if (user && (await bcrypt.compare(password, user.password))) {
+      if (user && (await bcrypt.compare(senha, user.senha))) {
         // Create token
         const token = jwt.sign(
           { user_id: user._id, email },
@@ -280,11 +282,15 @@ export async function httpCtrl(name, port = 4000) {
 
         // user
         res.status(200).json(user);
+      } else {
+        res.status(400).json("Invalid Credentials");
       }
-      res.status(400).send("Invalid Credentials");
     } catch (err) {
       console.log(err);
     }
+  });
+  app.post("/welcome", auth, (req, res) => {
+    res.status(200).send("Welcome 🙌 ");
   });
 }
 
