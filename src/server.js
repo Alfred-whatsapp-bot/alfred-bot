@@ -9,7 +9,9 @@ import { exec } from "child_process";
 //import mime from "mime-types";
 const require = createRequire(import.meta.url);
 require("dotenv").config();
+import bodyParser from "body-parser";
 
+app.use(bodyParser.json());
 /**
  * Logging debug
  * @param {String} type
