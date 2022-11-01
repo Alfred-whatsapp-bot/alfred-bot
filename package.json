@@ -19,11 +19,11 @@
     "http-ctrl:start": "pm2 start src/httpCtrl.js --node-args='--es-module-specifier-resolution=node'--name wchatbotcp",
     "http-ctrl:stop": "pm2 stop wchatbotcp",
     "http-ctrl:restart": "pm2 restart wchatbotcp",
-    "http-ctrl:reload": "pm2 reload wchatbotcp",
-    "http-ctrl:log": "pm2 logs wchatbotcp",
+    "http-ctrl:reload": "pm2 reload wchatbotcp ",
+    "http-ctrl:log": "pm2 logs wchatbotcp ",
     "conversations": "tail -f logs/conversations.log",
     "test": "jest",
-    "go": "npm run http-ctrl:dev:detach & npm run dev",
+    "go": "yarn dev && yarn http-ctrl:dev && yarn log:dev && yarn log:http-ctrl:dev",
     "heroku-postbuild": "npm run http-ctrl:dev:detach & npm run dev"
   },
   "dependencies": {

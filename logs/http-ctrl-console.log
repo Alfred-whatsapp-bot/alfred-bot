@@ -88,4 +88,15 @@ error Command failed with exit code 1.
   signal: null,
   cmd: 'yarn stop'
 }
-^C
+^C(node:19648) ExperimentalWarning: The Node.js specifier resolution flag is experimental. It could change or be removed at any time.
+(Use `node --trace-warnings ...` to show where the warning was created)
+Unable to load the sleep module (no animations available)
+[32minfo[39m:     [chatbotSession] Http chatbot control running on http://localhost:4000/
+(node:10452) ExperimentalWarning: The Node.js specifier resolution flag is experimental. It could change or be removed at any time.
+(Use `node --trace-warnings ...` to show where the warning was created)
+Unable to load the sleep module (no animations available)
+[32minfo[39m:     [chatbotSession] Http chatbot control running on http://localhost:4000/
+(node:12620) ExperimentalWarning: The Node.js specifier resolution flag is experimental. It could change or be removed at any time.
+(Use `node --trace-warnings ...` to show where the warning was created)
+Unable to load the sleep module (no animations available)
+[32minfo[39m:     [chatbotSession] Http chatbot control running on http://localhost:4000/
