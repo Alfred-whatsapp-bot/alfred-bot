@@ -15,6 +15,7 @@ import { Users } from "../model/user.model.cjs";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import auth from "../middleware/auth.js";
+import cors from "cors";
 
 /**
  * Logging debug
@@ -103,6 +104,7 @@ export async function httpCtrl(name, port = 4000) {
   }
   const app = express();
   app.use(bodyParser.json()); // support json encoded bodies
+  app.use(cors()); // support cors
   const httpServer = http.createServer(app);
   httpServer.listen(port, () => {
     console.log(
@@ -141,7 +143,8 @@ export async function httpCtrl(name, port = 4000) {
     res.send(html);
   });
   app.get("/data", (req, res, next) => {
-    authorize(req, res);
+    //authorize(req, res);
+    
     const qrPath = `tokens/${name}/qr.json`;
     const sessPath = `tokens/${name}/session.json`;
     const qr = fs.existsSync(qrPath)
@@ -255,6 +258,7 @@ export async function httpCtrl(name, port = 4000) {
     // Our register logic ends here
   });
   app.post("/login", async (req, res) => {
+    let authorized = false;
     // Our login logic starts here
     try {
       // Get user input
@@ -282,6 +286,8 @@ export async function httpCtrl(name, port = 4000) {
 
         // user
         res.status(200).json(user);
+        authorized = true;
+        return authorized;
       } else {
         res.status(400).json("Invalid Credentials");
       }
