@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   alfred-bot:
@@ -10,15 +10,15 @@ services:
     volumes:
       - ./src:/alfred-bot/src
     ports:
-      - '4000:4000'
-  
+      - "4000:4000"
+
   db:
-   container_name: 'alfred_db'
-   image: mysql:5.7.31
-   command: --default-authentication-plugin=mysql_native_password --sql_mode=NO_ENGINE_SUBSTITUTION,NO_AUTO_CREATE_USER --explicit_defaults_for_timestamp
-   restart: always
-   ports:
-     - '3308:3306'
-   environment:
-     - MYSQL_ROOT_PASSWORD=root
-     - TZ=America/Cuiaba
+    container_name: "alfred_db"
+    image: mysql:5.7.31
+    command: --default-authentication-plugin=mysql_native_password --sql_mode=NO_ENGINE_SUBSTITUTION,NO_AUTO_CREATE_USER --explicit_defaults_for_timestamp
+    restart: always
+    ports:
+      - "3308:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - TZ=America/Cuiaba
