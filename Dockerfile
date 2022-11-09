@@ -13,7 +13,6 @@ RUN apk update && apk add --no-cache nmap && \
     nss
 ENV TZ=America/Cuiaba
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
-ENV CHROME_BIN="/usr/bin/chromium-browser"
 RUN npm install pm2 -g
 # Only copy package* before installing to make better use of cache
 COPY package*.json .
@@ -24,7 +23,7 @@ COPY . /alfred-bot
 EXPOSE 4000
 CMD pm2 start src/main.js \ 
     --node-args='--es-module-specifier-resolution=node' \
-    --name wchatbot && \
+    --name alfred-bot && \
     pm2-runtime start src/httpCtrl.js \
     --node-args='--es-module-specifier-resolution=node' \
     --name alfred-bot
