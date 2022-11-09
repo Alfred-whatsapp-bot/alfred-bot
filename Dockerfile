@@ -13,6 +13,7 @@ RUN apk update && apk add --no-cache nmap && \
     nss
 ENV TZ=America/Cuiaba
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+ENV CHROME_BIN="/usr/bin/chromium-browser"
 RUN npm install pm2 -g
 # Only copy package* before installing to make better use of cache
 COPY package*.json .
