@@ -64,7 +64,7 @@ export async function httpCtrl(name, port = 4000) {
     fs.writeFileSync("logs/conversations.log", "");
   }
   const app = express();
-  app.use(bodyParser.json()); // support json encoded bodies
+  //app.use(bodyParser.json()); // support json encoded bodies
   app.use(cors()); // support cors
   const httpServer = http.createServer(app);
   httpServer.listen(port, () => {
@@ -123,10 +123,19 @@ export async function httpCtrl(name, port = 4000) {
       .toString()
       .replace(/\n/g, "<br>");
     res.json({
+      info,
       session: sess,
       qr: qr,
       logs: logs,
     });
+  });
+  app.get("/connection", async (req, res, next) => {
+    authorize(req, res);
+    const connectionPath = `tokens/${name}/connection.json`;
+    const connection = fs.existsSync(connectionPath)
+      ? JSON.parse(fs.readFileSync(connectionPath))
+      : null;
+    res.json({ status: connection?.status });
   });
   app.get("/controls/start", (req, res, next) => {
     authorize(req, res);
@@ -138,6 +147,7 @@ export async function httpCtrl(name, port = 4000) {
       }
       res.json({ status: "OK" });
       console.log(stdout);
+      log("Start", `Start chatbot...`);
     });
   });
   app.get("/controls/stop", (req, res, next) => {
@@ -150,6 +160,7 @@ export async function httpCtrl(name, port = 4000) {
       }
       res.json({ status: "OK" });
       console.log(stdout);
+      log("Stop", `Stop chatbot...`);
     });
   });
   app.get("/controls/reload", (req, res, next) => {
@@ -162,6 +173,7 @@ export async function httpCtrl(name, port = 4000) {
       }
       res.json({ status: "OK" });
       console.log(stdout);
+      log("Reload", `Reloading chatbot...`);
     });
   });
   app.get("/controls/restart", (req, res, next) => {
@@ -174,6 +186,7 @@ export async function httpCtrl(name, port = 4000) {
       }
       res.json({ status: "OK" });
       console.log(stdout);
+      log("Restart", `Restart chatbot...`);
     });
   });
   app.post("/register", async (req, res) => {
@@ -344,30 +357,6 @@ export async function session(name, conversation) {
             })
           );
         }, 2000);
-        // client
-        //   .onMessage((message) => {
-        //     if (hour >= 8 && hour <= 22) {
-        //       if (!message.isGroupMsg) {
-        //         const currentStage = getStage({ from: message.from });
-
-        //         const messageResponse = stages[currentStage].stage.exec({
-        //           from: message.from,
-        //           message: message.body,
-        //           client,
-        //         });
-
-        //         if (messageResponse) {
-        //           client
-        //             .sendText(message.from, messageResponse)
-        //             .then(() => {
-        //               console.log("Message sent.");
-        //             })
-        //             .catch((error) =>
-        //               console.error("Error when sending message", error)
-        //             );
-        //         }
-        //       }
-        //     }
         resolve(client);
       })
       .catch((err) => {
@@ -376,36 +365,24 @@ export async function session(name, conversation) {
       });
   });
 
-  async function start(client) {
-    let date = new Date();
-    let hour = date.getHours();
-    let minutes = date.getMinutes();
-    let hourMinutes = hour + ":" + minutes;
-    console.log(hourMinutes);
+  async function start(client, conversation) {
+    log(
+      "Start",
+      `Conversation flow (${conversation.length} replies) running...`
+    );
     client.onMessage((message) => {
-      if (hour >= 8 && hour <= 22) {
-        if (!message.isGroupMsg) {
-          const currentStage = getStage({ from: message.from });
+      if (!message.isGroupMsg) {
+        const currentStage = getStage({ from: message.from });
 
-          const messageResponse = stages[currentStage].stage.exec({
-            from: message.from,
-            message: message.body,
-            client,
-          });
+        const messageResponse = stages[currentStage].stage.exec({
+          from: message.from,
+          message: message.body,
+          client,
+        });
 
-          if (messageResponse) {
-            client
-              .sendText(message.from, messageResponse)
-              .then(() => {
-                console.log("Message sent.");
-              })
-              .catch((error) =>
-                console.error("Error when sending message", error)
-              );
-          }
-        } else {
+        if (messageResponse) {
           client
-            .sendText(message.from, "🔴 Desculpe, não atendemos grupos!")
+            .sendText(message.from, messageResponse)
             .then(() => {
               console.log("Message sent.");
             })
@@ -414,10 +391,12 @@ export async function session(name, conversation) {
             );
         }
       } else {
-        client.sendText(
-          message.from,
-          "Desculpe, estamos fechados. Volte amanhã das 8h às 22h."
-        );
+        client
+          .sendText(message.from, "🔴 Desculpe, não atendemos grupos!")
+          .then(() => {
+            console.log("Message sent.");
+          })
+          .catch((error) => console.error("Error when sending message", error));
       }
     });
   }

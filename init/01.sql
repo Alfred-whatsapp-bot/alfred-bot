@@ -1,6 +1,5 @@
 -- MariaDB dump 10.19  Distrib 10.5.15-MariaDB, for debian-linux-gnu (x86_64)
 --
--- Host: 34.95.205.131    Database: alfred_bot
 -- ------------------------------------------------------
 -- Server version	8.0.26-google
 

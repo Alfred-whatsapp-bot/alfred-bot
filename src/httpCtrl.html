@@ -235,6 +235,7 @@
             const session = data.session ? data.session.session : "";
             const status = data.session ? data.session.status : "";
             const groups = data.info ? data.info.groups : "0";
+            console.log(groups);
             const attempts = data.qr ? data.qr.attempts : "0";
             const qr = data.qr ? data.qr.base64Qr : false;
             const logs = data.logs
