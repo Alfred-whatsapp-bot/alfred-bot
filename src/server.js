@@ -54,49 +54,10 @@ export function error(message, err) {
 }
 
 /**
- * Create a chatbot session
- * @param {String} name
- * @param {Array} conversation
- */
-export async function session(name, conversation) {
-  if (!fs.existsSync(`tokens/${name}`)) {
-    fs.mkdirSync(`tokens/${name}`, { recursive: true });
-  }
-  fs.writeFileSync(
-    `tokens/${name}/qr.json`,
-    JSON.stringify({ attempts: 0, base64Qr: "" })
-  );
-  fs.writeFileSync(
-    `tokens/${name}/session.json`,
-    JSON.stringify({ session: name, status: "starting" })
-  );
-  venom
-    .create(
-      name,
-      (base64Qr, asciiQR, attempts, urlCode) => {
-        fs.writeFileSync(
-          `tokens/${name}/qr.json`,
-          JSON.stringify({ attempts, base64Qr })
-        );
-      },
-      (statusSession, session) => {
-        fs.writeFileSync(
-          `tokens/${name}/session.json`,
-          JSON.stringify({ session: name, status: statusSession })
-        );
-      },
-      venomOptions
-    )
-    .then((client) => start(client))
-    .catch((err) => console.error(err));
-}
-
-/**
  * Create a chatbot http Qr login
  * @param {String} name
  * @param {Number} port
  */
-
 export async function httpCtrl(name, port = 4000) {
   if (!fs.existsSync("logs")) {
     fs.mkdirSync("logs", { recursive: true });
@@ -144,9 +105,13 @@ export async function httpCtrl(name, port = 4000) {
   });
   app.get("/data", (req, res, next) => {
     //authorize(req, res);
-    
+
+    const infoPath = `tokens/${name}/info.json`;
     const qrPath = `tokens/${name}/qr.json`;
     const sessPath = `tokens/${name}/session.json`;
+    const info = fs.existsSync(infoPath)
+      ? JSON.parse(fs.readFileSync(infoPath))
+      : null;
     const qr = fs.existsSync(qrPath)
       ? JSON.parse(fs.readFileSync(qrPath))
       : null;
@@ -300,26 +265,147 @@ export async function httpCtrl(name, port = 4000) {
   });
 }
 
-function start(client) {
-  let date = new Date();
-  let hour = date.getHours();
-  let minutes = date.getMinutes();
-  let hourMinutes = hour + ":" + minutes;
-  console.log(hourMinutes);
-  client.onMessage((message) => {
-    if (hour >= 8 && hour <= 22) {
-      if (!message.isGroupMsg) {
-        const currentStage = getStage({ from: message.from });
+/**
+ * Create a chatbot session
+ * @param {String} name
+ * @param {Array} conversation
+ */
+export async function session(name, conversation) {
+  log("Init", "Starting chatbot...");
+  return new Promise((resolve, reject) => {
+    if (!fs.existsSync(`tokens/${name}`)) {
+      fs.mkdirSync(`tokens/${name}`, { recursive: true });
+    }
+    fs.writeFileSync(
+      `tokens/${name}/qr.json`,
+      JSON.stringify({ attempts: 0, base64Qr: "" })
+    );
+    fs.writeFileSync(
+      `tokens/${name}/session.json`,
+      JSON.stringify({ session: name, status: "starting" })
+    );
+    fs.writeFileSync(
+      `tokens/${name}/info.json`,
+      JSON.stringify({
+        id: "",
+        formattedTitle: "",
+        displayName: "",
+        isBusiness: "",
+        imgUrl: "",
+        wWebVersion: "",
+        groups: [],
+      })
+    );
+    venom
+      .create(
+        name,
+        (base64Qr, asciiQR, attempts, urlCode) => {
+          fs.writeFileSync(
+            `tokens/${name}/qr.json`,
+            JSON.stringify({ attempts, base64Qr })
+          );
+        },
+        (statusSession, session) => {
+          fs.writeFileSync(
+            `tokens/${name}/session.json`,
+            JSON.stringify({ session: name, status: statusSession })
+          );
+        },
+        venomOptions
+      )
+      .then(async (client) => {
+        await start(client, conversation);
+        const hostDevice = await client.getHostDevice();
+        const wWebVersion = await client.getWAVersion();
+        const groups = (await client.getAllChats())
+          .filter((chat) => chat.isGroup)
+          .map((group) => {
+            return { id: group.id._serialized, name: group.name };
+          });
+        setInterval(async () => {
+          let status = "DISCONNECTED";
+          try {
+            status = await client.getConnectionState();
+          } catch (error) {}
+          fs.writeFileSync(
+            `tokens/${name}/connection.json`,
+            JSON.stringify({ status })
+          );
+          fs.writeFileSync(
+            `tokens/${name}/info.json`,
+            JSON.stringify({
+              id: hostDevice.id._serialized,
+              formattedTitle: hostDevice.formattedTitle,
+              displayName: hostDevice.displayName,
+              isBusiness: hostDevice.isBusiness,
+              imgUrl: hostDevice.imgUrl,
+              wWebVersion,
+              groups,
+            })
+          );
+        }, 2000);
+        // client
+        //   .onMessage((message) => {
+        //     if (hour >= 8 && hour <= 22) {
+        //       if (!message.isGroupMsg) {
+        //         const currentStage = getStage({ from: message.from });
 
-        const messageResponse = stages[currentStage].stage.exec({
-          from: message.from,
-          message: message.body,
-          client,
-        });
+        //         const messageResponse = stages[currentStage].stage.exec({
+        //           from: message.from,
+        //           message: message.body,
+        //           client,
+        //         });
 
-        if (messageResponse) {
+        //         if (messageResponse) {
+        //           client
+        //             .sendText(message.from, messageResponse)
+        //             .then(() => {
+        //               console.log("Message sent.");
+        //             })
+        //             .catch((error) =>
+        //               console.error("Error when sending message", error)
+        //             );
+        //         }
+        //       }
+        //     }
+        resolve(client);
+      })
+      .catch((err) => {
+        console.error(err);
+        reject(err);
+      });
+  });
+
+  async function start(client) {
+    let date = new Date();
+    let hour = date.getHours();
+    let minutes = date.getMinutes();
+    let hourMinutes = hour + ":" + minutes;
+    console.log(hourMinutes);
+    client.onMessage((message) => {
+      if (hour >= 8 && hour <= 22) {
+        if (!message.isGroupMsg) {
+          const currentStage = getStage({ from: message.from });
+
+          const messageResponse = stages[currentStage].stage.exec({
+            from: message.from,
+            message: message.body,
+            client,
+          });
+
+          if (messageResponse) {
+            client
+              .sendText(message.from, messageResponse)
+              .then(() => {
+                console.log("Message sent.");
+              })
+              .catch((error) =>
+                console.error("Error when sending message", error)
+              );
+          }
+        } else {
           client
-            .sendText(message.from, messageResponse)
+            .sendText(message.from, "🔴 Desculpe, não atendemos grupos!")
             .then(() => {
               console.log("Message sent.");
             })
@@ -328,18 +414,11 @@ function start(client) {
             );
         }
       } else {
-        client
-          .sendText(message.from, "🔴 Desculpe, não atendemos grupos!")
-          .then(() => {
-            console.log("Message sent.");
-          })
-          .catch((error) => console.error("Error when sending message", error));
+        client.sendText(
+          message.from,
+          "Desculpe, estamos fechados. Volte amanhã das 8h às 22h."
+        );
       }
-    } else {
-      client.sendText(
-        message.from,
-        "Desculpe, estamos fechados. Volte amanhã das 8h às 22h."
-      );
-    }
-  });
+    });
+  }
 }
