@@ -328,6 +328,7 @@ export async function session(name, conversation) {
       )
       .then(async (client) => {
         await start(client, conversation);
+        console.log("Chatbot started!");
         const hostDevice = await client.getHostDevice();
         const wWebVersion = await client.getWAVersion();
         const groups = (await client.getAllChats())
@@ -366,10 +367,6 @@ export async function session(name, conversation) {
   });
 
   async function start(client, conversation) {
-    log(
-      "Start",
-      `Conversation flow (${conversation.length} replies) running...`
-    );
     client.onMessage((message) => {
       if (!message.isGroupMsg) {
         const currentStage = getStage({ from: message.from });
@@ -400,4 +397,28 @@ export async function session(name, conversation) {
       }
     });
   }
+  // function start(client) {
+  //   client.onMessage((message) => {
+  //     if (!message.isGroupMsg) {
+  //       const currentStage = getStage({ from: message.from });
+
+  //       const messageResponse = stages[currentStage].stage.exec({
+  //         from: message.from,
+  //         message: message.body,
+  //         client,
+  //       });
+
+  //       if (messageResponse) {
+  //         client
+  //           .sendText(message.from, messageResponse)
+  //           .then(() => {
+  //             console.log("Message sent.");
+  //           })
+  //           .catch((error) =>
+  //             console.error("Error when sending message", error)
+  //           );
+  //       }
+  //     }
+  //   });
+  // }
 }
