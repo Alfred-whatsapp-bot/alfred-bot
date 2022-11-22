@@ -23,7 +23,7 @@ export const venomOptions = {
   debug: false, // Opens a debug session
   logQR: true, // Logs QR automatically in terminal
   browserWS: "", // If u want to use browserWSEndpoint
-  executablePath: process.env.CHROME_BIN || null, // If u want to use executablePath to use Chrome
+  //executablePath: process.env.CHROME_BIN || null, // If u want to use executablePath to use Chrome
   browserArgs: [
     "--user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36",
     "--no-sandbox",
