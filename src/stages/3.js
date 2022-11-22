@@ -1,14 +1,16 @@
 import { storage } from "../storage.js";
 import { getDistancia } from "../../repository/repository.mjs";
+import { buttons } from "../helpers/helpers";
 
 export const stageThree = {
   async exec({ from, message, client }) {
+  
     storage[from].address = message;
     await getDistancia(message)
       .then(async (data) => {
         console.log(data);
-        //const distancia = 10;
-        const distancia = typeof data == Number ? data : 10;
+        const distancia = 10;
+        //const distancia = typeof data == Number ? data : 10;
         const order = "🗒️ *RESUMO DO PEDIDO*: \n\n";
         const itens = storage[from].itens;
         const itensList = itens.map((item, index) => {
@@ -32,14 +34,18 @@ export const stageThree = {
           ` \n\n📍 Endereço: *${message}*` +
           ` \n🚚 Taxa de entrega: *R$ ${Math.ceil(taxaEntrega).toFixed(2)}*` +
           ` \n\n💵 *TOTAL*: *R$ ${Number(totalFinal).toFixed(2)}*` +
-          ` \n\n📝 Qual a *FORMA DE PAGAMENTO*? \n` +
-          ` Exemplo: \n` +
-          ` Dinheiro, troco para R$20.00 \n\n`;
-        await client.sendText(from, msg);
+          ` \n\n📝 Qual a *FORMA DE PAGAMENTO*? \n`;
+        await client.sendButtons(
+          from,
+          msg,
+          buttons(["CARTÃO", "DINHEIRO", "OUTROS"]),
+          " "
+        );
+
         storage[from].stage = 4;
       })
       .catch((err) => {
         console.log(err);
-      }, 0);
+      });
   },
 };
