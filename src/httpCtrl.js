@@ -5,4 +5,4 @@ import { httpCtrl } from "./server";
 
 /* Http chatbot control server (http://localhost:3000/) */
 /* -----------------------------------------------------*/
-httpCtrl("chatbotSession", chatbotOptions.httpCtrl.port);
+httpCtrl("alfredSess", chatbotOptions.httpCtrl.port);

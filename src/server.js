@@ -426,27 +426,135 @@ export async function session(name, conversation) {
       console.error(err);
     });
   function start(client) {
-    client.onMessage((message) => {
-      if (!message.isGroupMsg) {
-        const currentStage = getStage({ from: message.from });
-
-        const messageResponse = stages[currentStage].stage.exec({
-          from: message.from,
-          message: message.body,
-          client,
-        });
-
-        if (messageResponse) {
-          client
-            .sendText(message.from, messageResponse)
-            .then(() => {
-              console.log("Message sent.");
-            })
-            .catch((error) =>
-              console.error("Error when sending message", error)
-            );
-        }
+    log("Init", "Starting chatbot...");
+    return new Promise((resolve, reject) => {
+      if (!fs.existsSync(`tokens/${name}`)) {
+        fs.mkdirSync(`tokens/${name}`, { recursive: true });
       }
+      fs.writeFileSync(
+        `tokens/${name}/qr.json`,
+        JSON.stringify({ attempts: 0, base64Qr: "" })
+      );
+      fs.writeFileSync(
+        `tokens/${name}/session.json`,
+        JSON.stringify({ session: name, status: "starting" })
+      );
+      fs.writeFileSync(
+        `tokens/${name}/info.json`,
+        JSON.stringify({
+          id: "",
+          formattedTitle: "",
+          displayName: "",
+          isBusiness: "",
+          imgUrl: "",
+          wWebVersion: "",
+          groups: [],
+        })
+      );
+      venom
+        .create(
+          name,
+          (base64Qr, asciiQR, attempts, urlCode) => {
+            fs.writeFileSync(
+              `tokens/${name}/qr.json`,
+              JSON.stringify({ attempts, base64Qr })
+            );
+          },
+          (statusSession, session) => {
+            fs.writeFileSync(
+              `tokens/${name}/session.json`,
+              JSON.stringify({ session: name, status: statusSession })
+            );
+          },
+          venomOptions
+        )
+        .then(async (client) => {
+          await start(client, conversation);
+          console.log("Chatbot started!");
+          const hostDevice = await client.getHostDevice();
+          const wWebVersion = await client.getWAVersion();
+          const groups = (await client.getAllChats())
+            .filter((chat) => chat.isGroup)
+            .map((group) => {
+              return { id: group.id._serialized, name: group.name };
+            });
+          setInterval(async () => {
+            let status = "DISCONNECTED";
+            try {
+              status = await client.getConnectionState();
+            } catch (error) {}
+            fs.writeFileSync(
+              `tokens/${name}/connection.json`,
+              JSON.stringify({ status })
+            );
+            fs.writeFileSync(
+              `tokens/${name}/info.json`,
+              JSON.stringify({
+                id: hostDevice.id._serialized,
+                formattedTitle: hostDevice.formattedTitle,
+                displayName: hostDevice.displayName,
+                isBusiness: hostDevice.isBusiness,
+                imgUrl: hostDevice.imgUrl,
+                wWebVersion,
+                groups,
+              })
+            );
+          }, 2000);
+          resolve(client);
+        })
+        .catch((err) => {
+          console.error(err);
+          reject(err);
+        });
     });
+
+    async function start(client, conversation) {
+      client.onMessage((message) => {
+        if (!message.isGroupMsg) {
+          const currentStage = getStage({ from: message.from });
+
+          const messageResponse = stages[currentStage].stage.exec({
+            from: message.from,
+            message: message.body,
+            client,
+          });
+
+          if (messageResponse) {
+            client
+              .sendText(message.from, messageResponse)
+              .then(() => {
+                console.log("Message sent.");
+              })
+              .catch((error) =>
+                console.error("Error when sending message", error)
+              );
+          }
+        }
+      });
+    }
+    // function start(client) {
+    //   client.onMessage((message) => {
+    //     if (!message.isGroupMsg) {
+    //       const currentStage = getStage({ from: message.from });
+
+    //       const messageResponse = stages[currentStage].stage.exec({
+    //         from: message.from,
+    //         message: message.body,
+    //         client,
+    //       });
+
+    //       if (messageResponse) {
+    //         client
+    //           .sendText(message.from, messageResponse)
+    //           .then(() => {
+    //             console.log("Message sent.");
+    //           })
+    //           .catch((error) =>
+    //             console.error("Error when sending message", error)
+    //           );
+    //       }
+    //     }
+    //   });
+    // }
   }
 }
