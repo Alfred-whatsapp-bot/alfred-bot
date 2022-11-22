@@ -371,7 +371,6 @@ export async function session(name, conversation) {
       `Conversation flow (${conversation.length} replies) running...`
     );
     client.onMessage((message) => {
-      console.log(message);
       if (!message.isGroupMsg) {
         const currentStage = getStage({ from: message.from });
 
