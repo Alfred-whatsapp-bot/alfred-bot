@@ -40,21 +40,23 @@ export const stageOne = {
         const categorias = data.map((item) => {
           return item.categoria;
         });
-        console.log(categorias);
-        let categoriaList = [];
-        let array = [];
-        for (const categoria of categorias) {
-          (categoriaList = {
-            title: " ",
-            rows: [
-              {
-                title: `${categoria}`,
-                description: "",
-              },
-            ],
-          }),
-            array.push(categoriaList);
-        }
+        console.log("printa categorias: " + categorias);
+        let rows = [];
+        let list = [
+          {
+            title: "Categorias",
+            rows: rows,
+          },
+        ];
+        categorias.forEach((row, i) => {
+          rows.push({
+            rowId: `${i + 1}`,
+            title: row,
+            description: "",
+          });
+          console.log("printa primeira lista: " + list);
+        });
+
         storage[from].stage = 2;
         await client
           .sendFile(
@@ -69,14 +71,14 @@ export const stageOne = {
           .catch((erro) => {
             console.error("Error when sending: ", erro); //return object error
           });
+        console.log("Tipo de list quando é array: " + typeof list);
         await client
           .sendListMenu(
             from,
             "Categorias",
-            "Subtitulo",
-            "Escolha uma e comece seu pedido.",
+            "Escolha uma e comece seu pedido!",
             "MENU",
-            array
+            list
           )
           .then((result) => {
             console.log("Result: ", result); //return object success

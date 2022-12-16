@@ -6,16 +6,22 @@ import express from "express";
 import fs from "fs";
 import http from "http";
 import { exec } from "child_process";
-//import mime from "mime-types";
+import mime from "mime-types";
 const require = createRequire(import.meta.url);
 require("dotenv").config();
+<<<<<<< HEAD
 //import bodyParser from "body-parser";
 //import { getUserByEmail, createUser } from "../repository/userRepository.mjs";
+=======
+import bodyParser from "body-parser";
+import { getUserByEmail, createUser } from "../repository/userRepository.mjs";
+>>>>>>> luis
 import { Users } from "../model/user.model.cjs";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import auth from "../middleware/auth.js";
 import cors from "cors";
+import { sendEmail } from "./helpers/helpers.js";
 
 // /**
 //  * Logging debug
@@ -53,6 +59,7 @@ import cors from "cors";
 //   );
 // }
 
+<<<<<<< HEAD
 // /**
 //  * Create a chatbot http Qr login
 //  * @param {String} name
@@ -87,6 +94,42 @@ import cors from "cors";
 //     )
 //       .toString()
 //       .split(":");
+=======
+/**
+ * Create a chatbot http Qr login
+ * @param {String} name
+ * @param {Number} port
+ */
+export async function httpCtrl(name, port = 4000) {
+  if (!fs.existsSync("logs")) {
+    fs.mkdirSync("logs", { recursive: true });
+    fs.writeFileSync("logs/conversations.log", "");
+  }
+  const app = express();
+  app.use(bodyParser.json()); // support json encoded bodies
+  app.use(cors()); // support cors
+  const httpServer = http.createServer(app);
+  httpServer.listen(port, () => {
+    console.log(
+      `\x1b[32minfo\x1b[39m:     [${name}] Http chatbot control running on http://localhost:${port}/`
+    );
+  });
+  const authorize = (req, res) => {
+    const reject = () => {
+      res.setHeader("www-authenticate", "Basic");
+      res.sendStatus(401);
+    };
+    const authorization = req.headers.authorization;
+    if (!authorization) {
+      return reject();
+    }
+    const [username, password] = Buffer.from(
+      authorization.replace("Basic ", ""),
+      "base64"
+    )
+      .toString()
+      .split(":");
+>>>>>>> luis
 
 //     if (
 //       !(
@@ -106,6 +149,7 @@ import cors from "cors";
 //   app.get("/data", (req, res, next) => {
 //     //authorize(req, res);
 
+<<<<<<< HEAD
 //     const infoPath = `tokens/${name}/info.json`;
 //     const qrPath = `tokens/${name}/qr.json`;
 //     const sessPath = `tokens/${name}/session.json`;
@@ -193,6 +237,95 @@ import cors from "cors";
 //     // Our register logic starts here
 //     try {
 //       const { nome, email, senha } = req.body;
+=======
+    const infoPath = `tokens/${name}/info.json`;
+    const qrPath = `tokens/${name}/qr.json`;
+    const sessPath = `tokens/${name}/session.json`;
+    const info = fs.existsSync(infoPath)
+      ? JSON.parse(fs.readFileSync(infoPath))
+      : null;
+    const qr = fs.existsSync(qrPath)
+      ? JSON.parse(fs.readFileSync(qrPath))
+      : null;
+    const sess = fs.existsSync(sessPath)
+      ? JSON.parse(fs.readFileSync(sessPath))
+      : null;
+    const logs = fs
+      .readFileSync("logs/conversations.log")
+      .toString()
+      .replace(/\n/g, "<br>");
+    res.json({
+      info,
+      session: sess,
+      qr: qr,
+      logs: logs,
+    });
+  });
+  app.get("/connection", async (req, res, next) => {
+    //authorize(req, res);
+    const connectionPath = `tokens/${name}/connection.json`;
+    const connection = fs.existsSync(connectionPath)
+      ? JSON.parse(fs.readFileSync(connectionPath))
+      : null;
+    res.json({ status: connection?.status });
+  });
+  app.get("/controls/start", (req, res, next) => {
+    authorize(req, res);
+    exec("yarn start", (err, stdout, stderr) => {
+      if (err) {
+        res.json({ status: "ERROR" });
+        console.error(err);
+        return;
+      }
+      res.json({ status: "OK" });
+      console.log(stdout);
+      log("Start", `Start chatbot...`);
+    });
+  });
+  app.get("/controls/stop", (req, res, next) => {
+    authorize(req, res);
+    exec("yarn stop", (err, stdout, stderr) => {
+      if (err) {
+        res.json({ status: "ERROR" });
+        console.error(err);
+        return;
+      }
+      res.json({ status: "OK" });
+      console.log(stdout);
+      log("Stop", `Stop chatbot...`);
+    });
+  });
+  app.get("/controls/reload", (req, res, next) => {
+    authorize(req, res);
+    exec("yarn reload", (err, stdout, stderr) => {
+      if (err) {
+        res.json({ status: "ERROR" });
+        console.error(err);
+        return;
+      }
+      res.json({ status: "OK" });
+      console.log(stdout);
+      log("Reload", `Reloading chatbot...`);
+    });
+  });
+  app.get("/controls/restart", (req, res, next) => {
+    authorize(req, res);
+    exec("yarn restart", (err, stdout, stderr) => {
+      if (err) {
+        res.json({ status: "ERROR" });
+        console.error(err);
+        return;
+      }
+      res.json({ status: "OK" });
+      console.log(stdout);
+      log("Restart", `Restart chatbot...`);
+    });
+  });
+  app.post("/register", async (req, res) => {
+    // Our register logic starts here
+    try {
+      const { nome, email, senha } = req.body;
+>>>>>>> luis
 
 //       // Validate user input
 //       if (!(email && nome && senha)) {
@@ -402,6 +535,7 @@ import cors from "cors";
 //   }
 // }
 export async function session(name, conversation) {
+<<<<<<< HEAD
   venom
     .create(
       name,
@@ -424,6 +558,121 @@ export async function session(name, conversation) {
     })
     .catch((err) => {
       console.error(err);
+=======
+  log("Init", "Starting chatbot...");
+  return new Promise((resolve, reject) => {
+    if (!fs.existsSync(`tokens/${name}`)) {
+      fs.mkdirSync(`tokens/${name}`, { recursive: true });
+    }
+    fs.writeFileSync(
+      `tokens/${name}/qr.json`,
+      JSON.stringify({ attempts: 0, base64Qr: "" })
+    );
+    fs.writeFileSync(
+      `tokens/${name}/session.json`,
+      JSON.stringify({ session: name, status: "starting" })
+    );
+    fs.writeFileSync(
+      `tokens/${name}/info.json`,
+      JSON.stringify({
+        id: "",
+        formattedTitle: "",
+        displayName: "",
+        isBusiness: "",
+        imgUrl: "",
+        wWebVersion: "",
+        groups: [],
+      })
+    );
+    venom
+      .create(
+        name,
+        (base64Qr, asciiQR, attempts, urlCode) => {
+          fs.writeFileSync(
+            `tokens/${name}/qr.json`,
+            JSON.stringify({ attempts, base64Qr })
+          );
+        },
+        (statusSession, session) => {
+          fs.writeFileSync(
+            `tokens/${name}/session.json`,
+            JSON.stringify({ session: name, status: statusSession })
+          );
+        },
+        venomOptions
+      )
+      .then(async (client) => {
+        await start(client, conversation);
+        //const hostDevice = await client.getHostDevice();
+        const wWebVersion = await client.getWAVersion();
+        // const groups = (await client.getAllChats())
+        //   .filter((chat) => chat.isGroup)
+        //   .map((group) => {
+        //     return { id: group.id._serialized, name: group.name };
+        //   });
+        setInterval(async () => {
+          let status = "DISCONNECTED";
+          try {
+            status = await client.getConnectionState();
+          } catch (error) {}
+          fs.writeFileSync(
+            `tokens/${name}/connection.json`,
+            JSON.stringify({ status })
+          );
+          fs.writeFileSync(
+            `tokens/${name}/info.json`,
+            JSON.stringify({
+              // id: hostDevice.id._serialized,
+              // formattedTitle: hostDevice.formattedTitle,
+              // displayName: hostDevice.displayName,
+              // isBusiness: hostDevice.isBusiness,
+              // imgUrl: hostDevice.imgUrl,
+              wWebVersion,
+              //groups,
+            })
+          );
+        }, 2000);
+        resolve(client);
+      })
+      .catch((err) => {
+        console.error(err);
+        reject(err);
+      });
+  });
+
+  async function start(client, conversation) {
+    log(
+      "Start",
+      `Conversation flow (${conversation.length} replies) running...`
+    );
+    client.onMessage((message) => {
+      if (!message.isGroupMsg) {
+        const currentStage = getStage({ from: message.from });
+
+        const messageResponse = stages[currentStage].stage.exec({
+          from: message.from,
+          message: message.body,
+          client,
+        });
+        if (messageResponse) {
+          client
+            .sendText(message.from, messageResponse)
+            .then(() => {
+              console.log("Message sent.");
+            })
+            .catch((error) =>
+              console.error("Error when sending message", error)
+            );
+        }
+      } else {
+        client
+          .sendText(message.from, "🔴 Desculpe, não atendemos grupos!")
+          .then(() => {
+            console.log("Message sent.");
+          })
+          .catch((error) => console.error("Error when sending message", error));
+      }
+>>>>>>> luis
     });
   function start(client) {
     log("Init", "Starting chatbot...");
