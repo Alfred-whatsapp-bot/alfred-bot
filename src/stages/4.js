@@ -31,14 +31,15 @@ export const stageFour = {
         .catch((erro) => {
           console.error("Error when sending: ", erro); //return object error
         });
+
+      await client
+        .sendText("120363044092990106@g.us", msg)
+        .then((result) => {
+          console.log("Result: ", result); //return object success
+        })
+        .catch((erro) => {
+          console.error("Error when sending: ", erro); //return object error
+        });
     }
-    await client
-      .sendText("120363044092990106@g.us", msg)
-      .then((result) => {
-        console.log("Result: ", result); //return object success
-      })
-      .catch((erro) => {
-        console.error("Error when sending: ", erro); //return object error
-      });
   },
 };

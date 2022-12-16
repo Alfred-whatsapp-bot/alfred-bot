@@ -6,16 +6,17 @@ import express from "express";
 import fs from "fs";
 import http from "http";
 import { exec } from "child_process";
-//import mime from "mime-types";
+import mime from "mime-types";
 const require = createRequire(import.meta.url);
 require("dotenv").config();
 import bodyParser from "body-parser";
-//import { getUserByEmail, createUser } from "../repository/userRepository.mjs";
+import { getUserByEmail, createUser } from "../repository/userRepository.mjs";
 import { Users } from "../model/user.model.cjs";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import auth from "../middleware/auth.js";
 import cors from "cors";
+import { sendEmail } from "./helpers/helpers.js";
 
 /**
  * Logging debug
@@ -64,7 +65,7 @@ export async function httpCtrl(name, port = 4000) {
     fs.writeFileSync("logs/conversations.log", "");
   }
   const app = express();
-  //app.use(bodyParser.json()); // support json encoded bodies
+  app.use(bodyParser.json()); // support json encoded bodies
   app.use(cors()); // support cors
   const httpServer = http.createServer(app);
   httpServer.listen(port, () => {
@@ -130,7 +131,7 @@ export async function httpCtrl(name, port = 4000) {
     });
   });
   app.get("/connection", async (req, res, next) => {
-    authorize(req, res);
+    //authorize(req, res);
     const connectionPath = `tokens/${name}/connection.json`;
     const connection = fs.existsSync(connectionPath)
       ? JSON.parse(fs.readFileSync(connectionPath))
@@ -328,14 +329,13 @@ export async function session(name, conversation) {
       )
       .then(async (client) => {
         await start(client, conversation);
-        console.log("Chatbot started!");
-        const hostDevice = await client.getHostDevice();
+        //const hostDevice = await client.getHostDevice();
         const wWebVersion = await client.getWAVersion();
-        const groups = (await client.getAllChats())
-          .filter((chat) => chat.isGroup)
-          .map((group) => {
-            return { id: group.id._serialized, name: group.name };
-          });
+        // const groups = (await client.getAllChats())
+        //   .filter((chat) => chat.isGroup)
+        //   .map((group) => {
+        //     return { id: group.id._serialized, name: group.name };
+        //   });
         setInterval(async () => {
           let status = "DISCONNECTED";
           try {
@@ -348,13 +348,13 @@ export async function session(name, conversation) {
           fs.writeFileSync(
             `tokens/${name}/info.json`,
             JSON.stringify({
-              id: hostDevice.id._serialized,
-              formattedTitle: hostDevice.formattedTitle,
-              displayName: hostDevice.displayName,
-              isBusiness: hostDevice.isBusiness,
-              imgUrl: hostDevice.imgUrl,
+              // id: hostDevice.id._serialized,
+              // formattedTitle: hostDevice.formattedTitle,
+              // displayName: hostDevice.displayName,
+              // isBusiness: hostDevice.isBusiness,
+              // imgUrl: hostDevice.imgUrl,
               wWebVersion,
-              groups,
+              //groups,
             })
           );
         }, 2000);
@@ -367,6 +367,10 @@ export async function session(name, conversation) {
   });
 
   async function start(client, conversation) {
+    log(
+      "Start",
+      `Conversation flow (${conversation.length} replies) running...`
+    );
     client.onMessage((message) => {
       if (!message.isGroupMsg) {
         const currentStage = getStage({ from: message.from });
@@ -376,7 +380,6 @@ export async function session(name, conversation) {
           message: message.body,
           client,
         });
-
         if (messageResponse) {
           client
             .sendText(message.from, messageResponse)
@@ -397,28 +400,4 @@ export async function session(name, conversation) {
       }
     });
   }
-  // function start(client) {
-  //   client.onMessage((message) => {
-  //     if (!message.isGroupMsg) {
-  //       const currentStage = getStage({ from: message.from });
-
-  //       const messageResponse = stages[currentStage].stage.exec({
-  //         from: message.from,
-  //         message: message.body,
-  //         client,
-  //       });
-
-  //       if (messageResponse) {
-  //         client
-  //           .sendText(message.from, messageResponse)
-  //           .then(() => {
-  //             console.log("Message sent.");
-  //           })
-  //           .catch((error) =>
-  //             console.error("Error when sending message", error)
-  //           );
-  //       }
-  //     }
-  //   });
-  // }
 }

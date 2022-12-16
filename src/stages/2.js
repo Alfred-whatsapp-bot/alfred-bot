@@ -14,36 +14,35 @@ export const stageTwo = {
         return item;
       });
       let cat = categorias.map((item) => item.categoria);
-      console.log(cat);
       if (cat.includes(message)) {
         await getProdutosByCategory(message).then(async (data) => {
           const itensList = data.map((item, index) => {
             return item;
           });
-          let itemList = [];
-          let array = [];
-          for (const itens of itensList) {
-            itemList = {
-              title: ` `,
-              rows: [
-                {
-                  title: `${itens.nome} - R$ ${itens.valor}`,
-                  description: `${itens.descricao}`,
-                },
-              ],
-            };
-            array.push(itemList);
-          }
+          let rows = [];
+          let list = [
+            {
+              title: "Itens",
+              rows: rows,
+            },
+          ];
+          itensList.map((item, index) => {
+            rows.push({
+              rowId: `${index + 1}`,
+              title: `${item.nome} - R$ ${item.valor}`,
+              description: `${item.descricao}`,
+            });
+          });
 
           storage[from].categoria = message;
+          console.log("Tipo de list qnd é object: " + typeof list);
           await client
             .sendListMenu(
               from,
               `${itensList[0].categoria}`,
-              "subTitle",
               "Escolha um item por vez e monte seu carrinho.",
-              `MENU`,
-              array
+              "MENU",
+              list
             )
             .then((result) => {
               console.log("Result: ", result); //return object success
@@ -94,28 +93,28 @@ export const stageTwo = {
           const itensList = data.map((item, index) => {
             return item;
           });
-          let itemList = [];
-          let array = [];
-          for (const itens of itensList) {
-            itemList = {
-              title: ` `,
-              rows: [
-                {
-                  title: `${itens.nome} - R$ ${itens.valor}`,
-                  description: `${itens.descricao}`,
-                },
-              ],
-            };
-            array.push(itemList);
-          }
+          let rows = [];
+          let list = [
+            {
+              title: `${itensList[0].categoria}`,
+              rows: rows,
+            },
+          ];
+          itensList.map((item, index) => {
+            rows.push({
+              rowId: `${index + 1}`,
+              title: `${item.nome} - R$ ${item.valor}`,
+              description: `${item.descricao}`,
+            });
+          });
+
           await client
             .sendListMenu(
               from,
               `${itensList[0].categoria}`,
-              "subTitle",
               "Escolha um item por vez e monte seu carrinho.",
-              `CARDÁPIO`,
-              array
+              "MENU",
+              list
             )
             .then((result) => {
               console.log("Result: ", result); //return object success
@@ -129,30 +128,29 @@ export const stageTwo = {
           const categorias = data.map((item) => {
             return item.categoria;
           });
-          console.log(categorias);
-          let categoriaList = [];
-          let array = [];
-          for (const categoria of categorias) {
-            categoriaList = {
-              title: ` `,
-              rows: [
-                {
-                  title: `${categoria}`,
-                  description: "",
-                },
-              ],
-            };
-            array.push(categoriaList);
-          }
+
+          let rows = [];
+          let list = [
+            {
+              title: "Categorias",
+              rows: rows,
+            },
+          ];
+          categorias.forEach((row, i) => {
+            rows.push({
+              rowId: `${i + 1}`,
+              title: row,
+              description: "",
+            });
+          });
           storage[from].stage = 2;
           await client
             .sendListMenu(
               from,
               "Categorias",
-              "subTitle",
               "Escolha um item por vez e monte seu carrinho.",
               "MENU",
-              array
+              list
             )
             .then((result) => {
               console.log("Result: ", result); //return object success
